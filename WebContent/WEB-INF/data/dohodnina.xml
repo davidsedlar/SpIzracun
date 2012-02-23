@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dohodnina>
+	<Lestvica type="letna">
+		<Name>Letna</Name>
+		
+		<Stopnja>
+			<Name>Prva</Name>
+			<OsnovaZacetna>0</OsnovaZacetna>
+			<OsnovaZacetna>7634.40</OsnovaZacetna>
+			<ZnesekBaza>0</ZnesekBaza>
+			<VisinaPricentov>16</VisinaPricentov>
+		</Stopnja>
+		<Stopnja>
+			<Name>Druga</Name>
+			<OsnovaZacetna>7634.40</OsnovaZacetna>
+			<OsnovaZacetna>15268.77</OsnovaZacetna>
+			<ZnesekBaza>1221.50</ZnesekBaza>
+			<VisinaPricentov>27</VisinaPricentov>
+		</Stopnja>
+		<Stopnja>
+			<Name>Tretja</Name>
+			<OsnovaZacetna>15268.7</OsnovaZacetna>
+			<OsnovaZacetna>inf</OsnovaZacetna>
+			<ZnesekBaza>3282.78</ZnesekBaza>
+			<VisinaPricentov>41</VisinaPricentov>
+		</Stopnja>
+	</Lestvica>
+	<Lestvica type="mesecna">
+		<Name>Mesečna</Name>
+		
+		<Stopnja>
+			<Name>Prva</Name>
+			<OsnovaZacetna>0</OsnovaZacetna>
+			<OsnovaZacetna>636.20</OsnovaZacetna>
+			<ZnesekBaza>0</ZnesekBaza>
+			<VisinaPricentov>16</VisinaPricentov>
+		</Stopnja>
+		<Stopnja>
+			<Name>Druga</Name>
+			<OsnovaZacetna>636.20</OsnovaZacetna>
+			<OsnovaZacetna>1272.40</OsnovaZacetna>
+			<ZnesekBaza>101.79</ZnesekBaza>
+			<VisinaPricentov>27</VisinaPricentov>
+		</Stopnja>
+		<Stopnja>
+			<Name>Tretja</Name>
+			<OsnovaZacetna>1272.40</OsnovaZacetna>
+			<OsnovaZacetna>inf</OsnovaZacetna>
+			<ZnesekBaza>273.56</ZnesekBaza>
+			<VisinaPricentov>41</VisinaPricentov>
+		</Stopnja>
+	</Lestvica>
+</Dohodnina>
