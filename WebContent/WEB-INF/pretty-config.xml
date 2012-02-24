@@ -39,10 +39,12 @@
  	<url-mapping id="home">
 		<pattern value="/" />
 		<view-id value="/izracun.jsf"  />
+		<action onPostback="false">#{izracunBean.izracunajPrispevke}</action>
 	</url-mapping>
 	  
 	<url-mapping id="izracun">
 		<pattern value="/#{izracunBean.urnaPostavka}/#{izracunBean.urMesecno}/#{izracunBean.urDnevno}/#{izracunBean.steviloDni}/#{izracunBean.steviloPrazniki}/#{izracunBean.steviloDopust}/#{izracunBean.steviloBolniska}/#{izracunBean.zasluzekPrispevki}/" />
 		<view-id value="/izracun.jsf"  />
+		<action onPostback="false">#{izracunBean.izracunajPrispevke}</action>
 	</url-mapping>
 </pretty-config>

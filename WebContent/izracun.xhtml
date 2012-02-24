@@ -214,7 +214,7 @@
 					<h3>Prispevki (<a href="http://www.durs.gov.si/si/prispevki_za_socialno_varnost/prispevki_za_socialno_varnost_samozaposlenih_pojasnila/placevanje_prispevkov/" target="_blank" title="Lestvica">Lestvica</a>):</h3>
 					<table>
 						<tr class="customizable">
-							<td>Zaslužek prejšnje leto</td>
+							<td>Zaslužek prejšnje leto (dohodek)</td>
 							<td>								
 								<h:inputText value="#{izracunBean.zasluzekPrispevki}">
 									<f:convertNumber groupingUsed="true" minFractionDigits="2" />
@@ -225,7 +225,7 @@
 						<tr>
 							<td>Pokojninsko zavarovanje  (15,50% + 8,85%)</td>
 							<td>
-								<h:outputText value="#{izracunBean.letniZnesekSkupni}">
+								<h:outputText value="#{izracunBean.prispevkiPokojninsko}">
 									<f:convertNumber groupingUsed="true" minFractionDigits="2" />
 								</h:outputText>
 							</td>
@@ -234,7 +234,7 @@
 						<tr>
 							<td>Zdravstveno zavarovanje (6,36% + 6,56%) + Poškodbe pri delu (0,53%)</td>
 							<td>
-								<h:outputText value="#{izracunBean.letniZnesekSkupni}">
+								<h:outputText value="#{izracunBean.prispevkiZdravstveno}">
 									<f:convertNumber groupingUsed="true" minFractionDigits="2" />
 								</h:outputText>
 							</td>
@@ -243,16 +243,16 @@
 						<tr>
 							<td>Prispevki za zaposlovanje (0,14% + 0,06%)</td>
 							<td>
-								<h:outputText value="#{izracunBean.letniZnesekSkupni}">
+								<h:outputText value="#{izracunBean.prispevkiZaposlovanje}">
 									<f:convertNumber groupingUsed="true" minFractionDigits="2" />
 								</h:outputText>
 							</td>
 							<td>€</td>
 						</tr>	
 						<tr>
-							<td>Starševsko varstvo (0,14% + 0,10%)</td>
+							<td>Starševsko varstvo (0,10% + 0,10%)</td>
 							<td>
-								<h:outputText value="#{izracunBean.letniZnesekSkupni}">
+								<h:outputText value="#{izracunBean.prispevkiStarsevsko}">
 									<f:convertNumber groupingUsed="true" minFractionDigits="2" />
 								</h:outputText>
 							</td>
@@ -261,7 +261,7 @@
 						<tr class="total">
 							<td>Skupaj</td>
 							<td>
-								<h:outputText value="#{izracunBean.letniZnesekSkupni}">
+								<h:outputText value="#{izracunBean.prispevkiSkupaj}">
 									<f:convertNumber groupingUsed="true" minFractionDigits="2" />
 								</h:outputText>
 							</td>

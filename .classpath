@@ -7,7 +7,12 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER/App Engine 1.6.2.1"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Pretty Faces">
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Apache POI 3.7">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Pretty Faces 3.3.2">
 		<attributes>
 			<attribute name="owner.project.facets" value="#system#;jst.jsf"/>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
@@ -19,7 +24,7 @@
 			<attribute name="owner.project.facets" value="jst.jsf"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Log4j">
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Log4j 1.2.16">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>

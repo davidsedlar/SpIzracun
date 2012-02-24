@@ -1,9 +1,11 @@
 package com.lequack.controller;
 
+import java.io.Serializable;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
-import java.io.Serializable;
+import com.lequack.persistence.PersistenceManager;
 
 /**
  * Izracun zneskov za samostojne podjetnike.
@@ -24,6 +26,17 @@ public class IzracunBean implements Serializable {
 	private float steviloDopust = 25;
 	private float steviloBolniska = 5;
 	private float zasluzekPrispevki = 0;
+	
+	private float prispevkiPokojninsko = 0;
+	private float prispevkiZdravstveno = 0;
+	private float prispevkiZaposlovanje = 0;
+	private float prispevkiStarsevsko = 0;
+	
+
+	public void izracunajPrispevke()
+	{
+		PersistenceManager.getPrispevki(this);
+	}
 	
 	/**
 	 * Izracun mesecnega zneska pri dolocenih mesecnih urah.
@@ -51,6 +64,13 @@ public class IzracunBean implements Serializable {
 	 */
 	public float getLetniZnesekSkupniNormiran() {
 		return getLetniZnesekSkupni() * 0.75f;
+	}	
+	
+	/**
+	 * Izracun vseh prispevkov;
+	 */
+	public float getPrispevkiSkupaj() {
+		return prispevkiPokojninsko + prispevkiZdravstveno + prispevkiStarsevsko + prispevkiZaposlovanje;	
 	}	
 	
 	/*
@@ -118,5 +138,37 @@ public class IzracunBean implements Serializable {
 
 	public void setZasluzekPrispevki(float zasluzekPrispevki) {
 		this.zasluzekPrispevki = zasluzekPrispevki;
+	}
+
+	public float getPrispevkiPokojninsko() {
+		return prispevkiPokojninsko;
+	}
+
+	public void setPrispevkiPokojninsko(float prispevkiPokojninsko) {
+		this.prispevkiPokojninsko = prispevkiPokojninsko;
+	}
+
+	public float getPrispevkiZdravstveno() {
+		return prispevkiZdravstveno;
+	}
+
+	public void setPrispevkiZdravstveno(float prispevkiZdravstveno) {
+		this.prispevkiZdravstveno = prispevkiZdravstveno;
+	}
+
+	public float getPrispevkiZaposlovanje() {
+		return prispevkiZaposlovanje;
+	}
+
+	public void setPrispevkiZaposlovanje(float prispevkiZaposlovanje) {
+		this.prispevkiZaposlovanje = prispevkiZaposlovanje;
+	}
+
+	public float getPrispevkiStarsevsko() {
+		return prispevkiStarsevsko;
+	}
+
+	public void setPrispevkiStarsevsko(float prispevkiStarsevsko) {
+		this.prispevkiStarsevsko = prispevkiStarsevsko;
 	}
 }
