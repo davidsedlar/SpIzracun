@@ -5,108 +5,38 @@
 	<h:head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
 		<title>Kalkulator za izračun končnega izplena za zasebnike (S.P.-je)</title>
-		<style type="text/css">
-			a:link { text-decoration: none; }
-			
-			a:hover { text-decoration: underline; }
-			
-			body {
-				font-family: Calibri,sans-serif;
-				font-size: 11pt;
-				margin: 0;
-			}
-			
-			div.header {
-				background-color: #DBE5F1;
-				height: 100px;
-				margin-bottom: 50px;
-  				box-shadow: 0 3px 5px 5px #CCC;
-  				text-align: center;
-  				line-height: 100px;
-			}
-			
-			div.footer {
-				border-top: dashed 1px black;
-				padding-top: 10px;
-			}	
-						
-			div.content {
-				width: 500px;
-				margin: auto;
-			}
-			
-			div.centermargin {
-				text-align: center;
-				margin-top: 20px;
-			}
-			
-			h1 {
-				margin: 0;
-			}
-			
-			img {
-				border: none;
-				margin: 5px;
-			}	
-					
-			input[type='text'] {
-				text-align: right;
-			    width: 95%;
-				color: #C0504D;
-				font: inherit;
-				border: solid 1px black;
-			}
-			
-			input[type='submit'] {
-				font-weight: bold;
-				margin-right: 20px;
-			}
-			
-			table {
-				border-collapse: collapse; 
-				table-layout: fixed; 
-				border: solid 1px black;
-				width: 100%;
-			}
-			
-			td { padding: 2px; }
-			
-			td:nth-child(2) {
-				background-color: #DBE5F1;
-				width: 100px;
-				text-align: right;
-				border-left: dashed 1px black;
-			}
-			
-			td:nth-child(3) {
-				background-color: #DBE5F1;
-				width: 20px;
-				text-align: left;
-			}		
-			
-			tr:hover td { 
-				background-color: #DBE5F1;
-			}
-			
-			tr.customizable { color: #C0504D; }
-			
-			tr.total { font-weight: bold;}	
-		</style>
+		
+		<link type="text/css" href="${facesContext.externalContext.requestContextPath}/css/main.css" rel="stylesheet" />
 	</h:head>
+	
 	<h:body>
 		<div class="header">
 			<h1>Kalkulator za izračun končnega izplena za zasebnike (S.P.-je)</h1>
 		</div>
+		
 		<div class="content">
+			<div class="info">
+				Podatki so informativne narave in so izračunani na podlagi normiranih stroškov v višini 25%. Ta oblika obračunavanja
+				stroškov je primerna za osebe, katerih prihodki iz dejavnosti v zadnjih zaporednih 12 mesecih ne presegajo 42.000 eurov.
+				<a href="http://www.durs.gov.si/si/storitve/brosure_in_zlozenke_durs/opomnik_za_davcne_zavezance_ki_opravljajo_dejavnost_zacetnike/#c19411" target="_blank" title="Normirani stroški">Več informacij...</a>
+			</div>
+			
+			<h:messages styleClass="errors" />
+			
 			<h:form>
+				<div class="section centermargin">
+					<h:commandButton value="Izračunaj" action="pretty:izracun" />
+					<h:button value="Ponastavi" outcome="pretty:home" />
+				</div>	
+				
 				<div class="section">
-					<h3>Samozaposlitev (normirani stroški):</h3>
+					<h3>Osnovni podatki:</h3>
 					<table>
 						<tr class="customizable">
 							<td>Urna postavka (brez DDV)</td>
 							<td>
-								<h:inputText value="#{izracunBean.urnaPostavka}">
-									<f:convertNumber groupingUsed="true" minFractionDigits="2" />
+								<h:inputText value="#{izracunBean.urnaPostavka}" required="true" label="Urna postavka">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 								</h:inputText>
 							</td>
 							<td>€</td>
@@ -114,8 +44,8 @@
 						<tr class="customizable">
 							<td>Delovnih ur (mesečno)</td>
 							<td>
-								<h:inputText value="#{izracunBean.urMesecno}">
-									<f:convertNumber groupingUsed="true" minFractionDigits="2" />
+								<h:inputText value="#{izracunBean.urMesecno}" required="true" label="Delovnih ur (mesečno)">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 								</h:inputText>
 							</td>
 							<td>ur</td>
@@ -123,8 +53,8 @@
 						<tr class="customizable">
 							<td>Delovni dan (ur)</td>
 							<td>
-								<h:inputText value="#{izracunBean.urDnevno}">
-									<f:convertNumber groupingUsed="true" minFractionDigits="2" />
+								<h:inputText value="#{izracunBean.urDnevno}" required="true" label="Delovni dan (ur)">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 								</h:inputText>
 							</td>
 							<td>ur</td>
@@ -133,7 +63,7 @@
 							<td>Mesečni znesek skupno</td>
 							<td>
 								<h:outputText value="#{izracunBean.mesecniZnesekSkupni}">
-									<f:convertNumber groupingUsed="true" minFractionDigits="2" />
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 								</h:outputText>
 							</td>
 							<td>€</td>
@@ -147,8 +77,8 @@
 						<tr class="customizable">
 							<td>Število vseh delavnikov (letno)</td>
 							<td>								
-								<h:inputText value="#{izracunBean.steviloDni}">
-									<f:convertNumber groupingUsed="true" minFractionDigits="2" />
+								<h:inputText value="#{izracunBean.steviloDni}" required="true" label="Število vseh delavnikov (letno)">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 								</h:inputText>
 							</td>
 							<td>dni</td>
@@ -156,8 +86,8 @@
 						<tr class="customizable">
 							<td>Prazniki</td>
 							<td>								
-								<h:inputText value="#{izracunBean.steviloPrazniki}">
-									<f:convertNumber groupingUsed="true" minFractionDigits="2" />
+								<h:inputText value="#{izracunBean.steviloPrazniki}" required="true" label="Prazniki">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 								</h:inputText>
 							</td>
 							<td>dni</td>
@@ -165,8 +95,8 @@
 						<tr class="customizable">
 							<td>Dopust</td>
 							<td>								
-								<h:inputText value="#{izracunBean.steviloDopust}">
-									<f:convertNumber groupingUsed="true" minFractionDigits="2" />
+								<h:inputText value="#{izracunBean.steviloDopust}" required="true" label="Dopust">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 								</h:inputText>
 							</td>
 							<td>dni</td>
@@ -174,8 +104,8 @@
 						<tr class="customizable">
 							<td>Bolniška</td>
 							<td>								
-								<h:inputText value="#{izracunBean.steviloBolniska}">
-									<f:convertNumber groupingUsed="true" minFractionDigits="2" />
+								<h:inputText value="#{izracunBean.steviloBolniska}" required="true" label="Bolniška">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 								</h:inputText>
 							</td>
 							<td>dni</td>
@@ -184,7 +114,7 @@
 							<td>Skupaj delavnikov (letno)</td>
 							<td>
 								<h:outputText value="#{izracunBean.steviloDelavnikovSkupaj}">
-									<f:convertNumber groupingUsed="true" minFractionDigits="2" />
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 								</h:outputText>
 							</td>
 							<td>dni</td>
@@ -193,7 +123,7 @@
 							<td>Letni znesek skupno</td>
 							<td>
 								<h:outputText value="#{izracunBean.letniZnesekSkupni}">
-									<f:convertNumber groupingUsed="true" minFractionDigits="2" />
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 								</h:outputText>
 							</td>
 							<td>€</td>
@@ -202,7 +132,7 @@
 							<td>Letni znesek skupno (odšteti normirani stroški 25%)</td>
 							<td>
 								<h:outputText value="#{izracunBean.letniZnesekSkupniNormiran}">
-									<f:convertNumber groupingUsed="true" minFractionDigits="2" />
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 								</h:outputText>
 							</td>
 							<td>€</td>
@@ -211,13 +141,13 @@
 				</div>
 				
 				<div class="section">
-					<h3>Prispevki (<a href="http://www.durs.gov.si/si/prispevki_za_socialno_varnost/prispevki_za_socialno_varnost_samozaposlenih_pojasnila/placevanje_prispevkov/" target="_blank" title="Lestvica">Lestvica</a>):</h3>
+					<h3>Prispevki (<a href="http://www.durs.gov.si/si/prispevki_za_socialno_varnost/prispevki_za_socialno_varnost_samozaposlenih_pojasnila/placevanje_prispevkov/" target="_blank" title="Lestvica">Več informacij...</a>):</h3>
 					<table>
 						<tr class="customizable">
 							<td>Zaslužek prejšnje leto (dohodek)</td>
 							<td>								
-								<h:inputText value="#{izracunBean.zasluzekPrispevki}">
-									<f:convertNumber groupingUsed="true" minFractionDigits="2" />
+								<h:inputText value="#{izracunBean.zasluzekPrispevki}" required="true" label="Zaslužek prejšnje leto (dohodek)">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 								</h:inputText>
 							</td>
 							<td>€</td>
@@ -226,7 +156,7 @@
 							<td>Pokojninsko zavarovanje  (15,50% + 8,85%)</td>
 							<td>
 								<h:outputText value="#{izracunBean.prispevkiPokojninsko}">
-									<f:convertNumber groupingUsed="true" minFractionDigits="2" />
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 								</h:outputText>
 							</td>
 							<td>€</td>
@@ -235,7 +165,7 @@
 							<td>Zdravstveno zavarovanje (6,36% + 6,56%) + Poškodbe pri delu (0,53%)</td>
 							<td>
 								<h:outputText value="#{izracunBean.prispevkiZdravstveno}">
-									<f:convertNumber groupingUsed="true" minFractionDigits="2" />
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 								</h:outputText>
 							</td>
 							<td>€</td>
@@ -244,7 +174,7 @@
 							<td>Prispevki za zaposlovanje (0,14% + 0,06%)</td>
 							<td>
 								<h:outputText value="#{izracunBean.prispevkiZaposlovanje}">
-									<f:convertNumber groupingUsed="true" minFractionDigits="2" />
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 								</h:outputText>
 							</td>
 							<td>€</td>
@@ -253,22 +183,166 @@
 							<td>Starševsko varstvo (0,10% + 0,10%)</td>
 							<td>
 								<h:outputText value="#{izracunBean.prispevkiStarsevsko}">
-									<f:convertNumber groupingUsed="true" minFractionDigits="2" />
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 								</h:outputText>
 							</td>
 							<td>€</td>
 						</tr>	
 						<tr class="total">
-							<td>Skupaj</td>
+							<td>Skupaj prispevki</td>
 							<td>
 								<h:outputText value="#{izracunBean.prispevkiSkupaj}">
-									<f:convertNumber groupingUsed="true" minFractionDigits="2" />
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 								</h:outputText>
 							</td>
 							<td>€</td>
 						</tr>			
 					</table>
-				</div>				
+				</div>	
+					
+				<div class="section">
+					<h3>Materialni stroški:</h3>
+					<table>
+						<tr class="customizable">
+							<td>Prevoz (privzeto cena vozovnice)</td>
+							<td>								
+								<h:inputText value="#{izracunBean.prevozZnesek}" required="true" label="Prevoz (privzeto cena vozovnice)">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:inputText>
+							</td>
+							<td>€</td>
+						</tr>
+						<tr class="customizable">
+							<td>Malica znesek (dnevno)</td>
+							<td>								
+								<h:inputText value="#{izracunBean.malicaDnevno}" required="true" label="Malica znesek (dnevno)">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:inputText>
+							</td>
+							<td>€</td>
+						</tr>	
+						<tr>
+							<td>Malica znesek (približen znesek na podlagi mesečnih ur)</td>
+							<td>
+								<h:outputText value="#{izracunBean.malicaMesecno}">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:outputText>
+							</td>
+							<td>€</td>
+						</tr>
+						<tr class="total">
+							<td>Skupaj materialni stroški</td>
+							<td>
+								<h:outputText value="#{izracunBean.materialniSkupaj}">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:outputText>
+							</td>
+							<td>€</td>
+						</tr>	
+					</table>
+				</div>	
+				
+				<div class="section">
+					<h3>Ostali stroški:</h3>
+					<table>
+						<tr class="customizable">
+							<td>Stroški računovodstva (mesečno)</td>
+							<td>								
+								<h:inputText value="#{izracunBean.stroskiRacunovodstvaMesecno}" required="true" label="Stroški računovodstva (mesečno)">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:inputText>
+							</td>
+							<td>€</td>
+						</tr>
+						<tr class="customizable">
+							<td>Ostali stroški skupaj (letno, za boljšo primerjavo z rednim delom se lahko vpiše tudi npr. znesek regresa, božičnice, ...)</td>
+							<td>								
+								<h:inputText value="#{izracunBean.stroskiOstaliLetno}" required="true" label="Ostali stroški skupaj">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:inputText>
+							</td>
+							<td>€</td>
+						</tr>
+						<tr>
+							<td>Stroški računovodstva (letno)</td>
+							<td>
+								<h:outputText value="#{izracunBean.stroskiRacunovodstvaLetno}">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:outputText>
+							</td>
+							<td>€</td>
+						</tr>
+						<tr class="total">
+							<td>Skupaj ostali stroški</td>
+							<td>
+								<h:outputText value="#{izracunBean.stroskiSkupaj}">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:outputText>
+							</td>
+							<td>€</td>
+						</tr>	
+					</table>
+				</div>		
+				
+				<div class="section">
+					<h3>Dohodnina (<a href="http://www.durs.gov.si/si/davki_predpisi_in_pojasnila/dohodnina_pojasnila/stopnje_dohodnine_za_leto_2011/lestvica_za_odmero_dohodnine_in_olajsave_za_leto_2011/" target="_blank" title="Lestvica">Več informacij...</a>):</h3>
+					<table>
+						<tr class="total">
+							<td>Dohoninsko izhodišče (za 12 mesecev)</td>
+							<td>
+								<h:outputText value="#{izracunBean.dohodninaIzhodisce}">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:outputText>
+							</td>
+							<td>€</td>
+						</tr>
+						<tr>
+							<td>Normirani stroški (25%)</td>
+							<td>
+								<h:outputText value="#{izracunBean.dohodninaNormiraniStroski}">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:outputText>
+							</td>
+							<td>€</td>
+						</tr>
+						<tr>
+							<td>Splošna olajšava</td>
+							<td>
+								<h:outputText value="#{izracunBean.dohodninaSplosnaOlajsava}">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:outputText>
+							</td>
+							<td>€</td>
+						</tr>
+						<tr>
+							<td>Prispevki</td>
+							<td>
+								<h:outputText value="#{izracunBean.prispevkiSkupaj}">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:outputText>
+							</td>
+							<td>€</td>
+						</tr>
+						<tr>
+							<td>Dohoninska osnova (odšteti stroški, olajšava in prispevki)</td>
+							<td>
+								<h:outputText value="#{izracunBean.dohodninaOsnova}">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2"/>
+								</h:outputText>
+							</td>
+							<td>€</td>
+						</tr>
+						<tr class="total">
+							<td>Skupaj dohodnina (mesečno)</td>
+							<td>
+								<h:outputText value="#{izracunBean.dohodninaSkupaj}">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:outputText>
+							</td>
+							<td>€</td>
+						</tr>	
+					</table>
+				</div>	
 				
 				<div class="section centermargin">
 					<h:commandButton value="Izračunaj" action="pretty:izracun" />
@@ -277,13 +351,13 @@
 			</h:form>
 			
 			<div class="centermargin footer">
-			<a href="http://code.google.com/appengine/" target="_blank" title="Google App Engine">
-				<img src="http://code.google.com/appengine/images/appengine-silver-120x30.gif"
-					alt="Powered by Google App Engine" /></a> 
-			<br /> 
-			<a href="http://ocpsoft.com/prettyfaces/" target="_blank" title="JSF 2 | Servlet | Java EE | URLRewrite | URL Rewrite Filter | Bookmarks | OcpSoft">
-				<img src="http://ocpsoft.com/wp-content/uploads/2009/10/poweredby-prettyfaces-small.png" height="15" width="94" /></a>
-		</div>
+				<a href="http://code.google.com/appengine/" target="_blank" title="Google App Engine">
+					<img src="http://code.google.com/appengine/images/appengine-silver-120x30.gif"
+						alt="Powered by Google App Engine" /></a> 
+				<br /> 
+				<a href="http://ocpsoft.com/prettyfaces/" target="_blank" title="JSF 2 | Servlet | Java EE | URLRewrite | URL Rewrite Filter | Bookmarks | OcpSoft">
+					<img src="http://ocpsoft.com/wp-content/uploads/2009/10/poweredby-prettyfaces-small.png" height="15" width="94" /></a>
+			</div>
 		</div>
 	</h:body>
 </html>

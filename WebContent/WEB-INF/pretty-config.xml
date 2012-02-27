@@ -3,48 +3,15 @@
                xsi:schemaLocation="http://ocpsoft.com/prettyfaces/3.3.2
                                    		http://ocpsoft.com/xml/ns/prettyfaces/ocpsoft-pretty-faces-3.3.2.xsd">
 
-   <!-- Begin Example RewriteRules 
-   
-      // These are custom rewrite-rules, and are probably not necessary for your application.
-
-      <rewrite match="^/old-url/(\w+)/$" substitute="/new_url/$1/" redirect="301" />
-
-   -->
-   
-   <!-- Begin UrlMappings 
-      // These are examples of URL mappings, and should be customized for your application.
-
-      <url-mapping id="home"> 
-          <pattern value="/" /> 
-          <view-id value="/faces/index.jsf" />
-      </url-mapping> 
-      
-      <url-mapping id="store"> 
-          <pattern value="/store/" /> 
-          <view-id value="/faces/shop/store.jsf" />
-      </url-mapping> 
-      
-      <url-mapping id="viewCategory">
-          <pattern value="/store/#{ cat : bean.category }/" />
-          <view-id value="/faces/shop/store.jsf" />
-      </url-mapping>
-      
-      <url-mapping id="viewItem">
-          <pattern value="/store/#{ cat : bean.category }/#{ iid : bean.itemId }/" />
-          <view-id value="/faces/shop/item.jsf" /> 
-          <action>#{bean.loadItem}</action>
-      </url-mapping>
-   
-   -->
  	<url-mapping id="home">
 		<pattern value="/" />
 		<view-id value="/izracun.jsf"  />
-		<action onPostback="false">#{izracunBean.izracunajPrispevke}</action>
+		<action onPostback="false">#{izracunBean.onLoad}</action>
 	</url-mapping>
 	  
 	<url-mapping id="izracun">
-		<pattern value="/#{izracunBean.urnaPostavka}/#{izracunBean.urMesecno}/#{izracunBean.urDnevno}/#{izracunBean.steviloDni}/#{izracunBean.steviloPrazniki}/#{izracunBean.steviloDopust}/#{izracunBean.steviloBolniska}/#{izracunBean.zasluzekPrispevki}/" />
+		<pattern value="/#{izracunBean.urnaPostavka}/#{izracunBean.urMesecno}/#{izracunBean.urDnevno}/#{izracunBean.steviloDni}/#{izracunBean.steviloPrazniki}/#{izracunBean.steviloDopust}/#{izracunBean.steviloBolniska}/#{izracunBean.zasluzekPrispevki}/#{izracunBean.prevozZnesek}/#{izracunBean.malicaDnevno}/#{izracunBean.stroskiRacunovodstvaMesecno}/#{izracunBean.stroskiOstaliLetno}/" />
 		<view-id value="/izracun.jsf"  />
-		<action onPostback="false">#{izracunBean.izracunajPrispevke}</action>
+		<action onPostback="false">#{izracunBean.onLoad}</action>
 	</url-mapping>
 </pretty-config>

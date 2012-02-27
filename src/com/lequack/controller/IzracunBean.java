@@ -17,7 +17,7 @@ import com.lequack.persistence.PersistenceManager;
 public class IzracunBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
+ 
 	private float urnaPostavka = 20;
 	private float urMesecno = 168;
 	private float urDnevno = 8;
@@ -26,16 +26,26 @@ public class IzracunBean implements Serializable {
 	private float steviloDopust = 25;
 	private float steviloBolniska = 5;
 	private float zasluzekPrispevki = 0;
+	private float malicaDnevno = 6.12f;
+	private float prevozZnesek = 37;
+	private float stroskiRacunovodstvaMesecno = 50;
+	private float stroskiOstaliLetno = 0;
 	
 	private float prispevkiPokojninsko = 0;
 	private float prispevkiZdravstveno = 0;
 	private float prispevkiZaposlovanje = 0;
 	private float prispevkiStarsevsko = 0;
 	
+	private float dohodninaSplosnaOlajsava = 0;
+	private float dohodninaSkupaj = 0;
 
-	public void izracunajPrispevke()
+	/**
+	 * Method is invoked by a GET type reequest.
+	 */
+	public void onLoad()
 	{
 		PersistenceManager.getPrispevki(this);
+		PersistenceManager.getDohodnina(this);
 	}
 	
 	/**
@@ -67,11 +77,62 @@ public class IzracunBean implements Serializable {
 	}	
 	
 	/**
-	 * Izracun vseh prispevkov;
+	 * Izracun vseh prispevkov.
 	 */
 	public float getPrispevkiSkupaj() {
 		return prispevkiPokojninsko + prispevkiZdravstveno + prispevkiStarsevsko + prispevkiZaposlovanje;	
 	}	
+	
+	/**
+	 * Izracun zneska za malico.
+	 */
+	public float getMalicaMesecno() {
+		return urMesecno / urDnevno * malicaDnevno;	
+	}		
+
+	/**
+	 * Izracun vseh materialnih stroškov.
+	 */
+	public float getMaterialniSkupaj() {
+		return prevozZnesek + getMalicaMesecno();
+	}	
+	
+	/**
+	 * Izracun racunovodskih stroskov letno.
+	 */
+	public float getStroskiRacunovodstvaLetno() {
+		return stroskiRacunovodstvaMesecno * 12;
+	}	
+	
+	/**
+	 * Izracun vseh stroškov letno.
+	 */
+	public float getStroskiSkupaj() {
+		return getStroskiRacunovodstvaLetno() + stroskiOstaliLetno;
+	}	
+	
+	/**
+	 * Dohodninsko izhodisce.
+	 */
+	public float getDohodninaIzhodisce() {
+		return getLetniZnesekSkupni() / 12;
+	}	
+	
+	/**
+	 * Normirani stroski mesecni.
+	 */
+	public float getDohodninaNormiraniStroski() {
+		return getDohodninaIzhodisce() * 0.25f;
+	}	
+	
+	/**
+	 * Dohodninska osnova.
+	 */
+	public float getDohodninaOsnova() {
+		float dohOsnova = getDohodninaIzhodisce() - getDohodninaNormiraniStroski() - dohodninaSplosnaOlajsava - getPrispevkiSkupaj();
+		return (dohOsnova < 0) ? 0 : dohOsnova;
+	}	
+	
 	
 	/*
 	 * Getters and setters below
@@ -170,5 +231,53 @@ public class IzracunBean implements Serializable {
 
 	public void setPrispevkiStarsevsko(float prispevkiStarsevsko) {
 		this.prispevkiStarsevsko = prispevkiStarsevsko;
+	}
+
+	public float getMalicaDnevno() {
+		return malicaDnevno;
+	}
+
+	public void setMalicaDnevno(float malicaDnevno) {
+		this.malicaDnevno = malicaDnevno;
+	}
+
+	public float getPrevozZnesek() {
+		return prevozZnesek;
+	}
+
+	public void setPrevozZnesek(float prevozZnesek) {
+		this.prevozZnesek = prevozZnesek;
+	}
+
+	public float getStroskiRacunovodstvaMesecno() {
+		return stroskiRacunovodstvaMesecno;
+	}
+
+	public void setStroskiRacunovodstvaMesecno(float stroskiRacunovodstvaMesecno) {
+		this.stroskiRacunovodstvaMesecno = stroskiRacunovodstvaMesecno;
+	}
+
+	public float getStroskiOstaliLetno() {
+		return stroskiOstaliLetno;
+	}
+
+	public void setStroskiOstaliLetno(float stroskiOstaliLetno) {
+		this.stroskiOstaliLetno = stroskiOstaliLetno;
+	}
+
+	public float getDohodninaSplosnaOlajsava() {
+		return dohodninaSplosnaOlajsava;
+	}
+
+	public void setDohodninaSplosnaOlajsava(float dohodninaSplosnaOlajsava) {
+		this.dohodninaSplosnaOlajsava = dohodninaSplosnaOlajsava;
+	}
+
+	public float getDohodninaSkupaj() {
+		return dohodninaSkupaj;
+	}
+
+	public void setDohodninaSkupaj(float dohodninaSkupaj) {
+		this.dohodninaSkupaj = dohodninaSkupaj;
 	}
 }
