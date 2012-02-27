@@ -6,6 +6,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
 		<title>Kalkulator za izračun končnega izplena za zasebnike (S.P.-je)</title>
 		
+		<link rel="shortcut icon" href="${facesContext.externalContext.requestContextPath}/favicon.ico" />
 		<link type="text/css" href="${facesContext.externalContext.requestContextPath}/css/main.css" rel="stylesheet" />
 	</h:head>
 	
@@ -18,6 +19,7 @@
 			<div class="info">
 				Podatki so informativne narave in so izračunani na podlagi normiranih stroškov v višini 25%. Ta oblika obračunavanja
 				stroškov je primerna za osebe, katerih prihodki iz dejavnosti v zadnjih zaporednih 12 mesecih ne presegajo 42.000 eurov.
+				<br />
 				<a href="http://www.durs.gov.si/si/storitve/brosure_in_zlozenke_durs/opomnik_za_davcne_zavezance_ki_opravljajo_dejavnost_zacetnike/#c19411" target="_blank" title="Normirani stroški">Več informacij...</a>
 			</div>
 			
@@ -189,7 +191,7 @@
 							<td>€</td>
 						</tr>	
 						<tr class="total">
-							<td>Skupaj prispevki</td>
+							<td>Skupaj prispevki (mesečno)</td>
 							<td>
 								<h:outputText value="#{izracunBean.prispevkiSkupaj}">
 									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
@@ -231,7 +233,7 @@
 							<td>€</td>
 						</tr>
 						<tr class="total">
-							<td>Skupaj materialni stroški</td>
+							<td>Skupaj materialni stroški (mesečno)</td>
 							<td>
 								<h:outputText value="#{izracunBean.materialniSkupaj}">
 									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
@@ -273,7 +275,7 @@
 							<td>€</td>
 						</tr>
 						<tr class="total">
-							<td>Skupaj ostali stroški</td>
+							<td>Skupaj ostali stroški (letno)</td>
 							<td>
 								<h:outputText value="#{izracunBean.stroskiSkupaj}">
 									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
@@ -343,6 +345,93 @@
 						</tr>	
 					</table>
 				</div>	
+				
+				<div class="section">
+					<h3>Izračun:</h3>
+					<table>
+						<tr>
+							<td>Letni znesek skupno</td>
+							<td>
+								<h:outputText value="#{izracunBean.letniZnesekSkupni}">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:outputText>
+							</td>
+							<td>€</td>
+						</tr>
+						<tr>
+							<td>Ostali stroški</td>
+							<td>
+								<h:outputText value="#{izracunBean.stroskiSkupaj}">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:outputText>
+							</td>
+							<td>€</td>
+						</tr>
+						<tr class="total">
+							<td>Letni znesek skupno (odšteti ostali stroški)</td>
+							<td>
+								<h:outputText value="#{izracunBean.letniZnesekBrezStroskov}">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:outputText>
+							</td>
+							<td>€</td>
+						</tr>
+						<tr class="total">
+							<td>Mesečni znesek skupno (odšteti ostali stroški, za 12 mesecev)</td>
+							<td>
+								<h:outputText value="#{izracunBean.mesecniZnesekBrezStroskov}">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:outputText>
+							</td>
+							<td>€</td>
+						</tr>
+						<tr>
+							<td>Prispevki (mesečno)</td>
+							<td>
+								<h:outputText value="#{izracunBean.prispevkiSkupaj}">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:outputText>
+							</td>
+							<td>€</td>
+						</tr>
+						<tr>
+							<td>Dohodnina (mesečno)</td>
+							<td>
+								<h:outputText value="#{izracunBean.dohodninaSkupaj}">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:outputText>
+							</td>
+							<td>€</td>
+						</tr>
+						<tr class="total">
+							<td>Mesečni znesek NETO (z materialnimi stroški - malica, prevoz)</td>
+							<td>
+								<h:outputText value="#{izracunBean.znesekNetoMaterialni}">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:outputText>
+							</td>
+							<td>€</td>
+						</tr>
+						<tr>
+							<td>Materialni stroški (mesečno)</td>
+							<td>
+								<h:outputText value="#{izracunBean.materialniSkupaj}">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:outputText>
+							</td>
+							<td>€</td>
+						</tr>
+						<tr class="total">
+							<td>Mesečni znesek NETO (končni, brez materialnih stroškov)</td>
+							<td>
+								<h:outputText value="#{izracunBean.znesekNetoKoncni}">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:outputText>
+							</td>
+							<td>€</td>
+						</tr>
+					</table>
+				</div>
 				
 				<div class="section centermargin">
 					<h:commandButton value="Izračunaj" action="pretty:izracun" />

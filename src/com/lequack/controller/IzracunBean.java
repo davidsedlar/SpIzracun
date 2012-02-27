@@ -133,6 +133,34 @@ public class IzracunBean implements Serializable {
 		return (dohOsnova < 0) ? 0 : dohOsnova;
 	}	
 	
+	/**
+	 * Letni znesek brez ostaligh stroskov.
+	 */
+	public float getLetniZnesekBrezStroskov() {
+		return getLetniZnesekSkupni() - getStroskiSkupaj();
+	}	
+	
+	/**
+	 * Mesecni znesek brez ostaligh stroskov.
+	 */
+	public float getMesecniZnesekBrezStroskov() {
+		return getLetniZnesekBrezStroskov() / 12;
+	}
+	
+	/**
+	 * Mesecni znesek neto skupaj z materialnimi stroski.
+	 */
+	public float getZnesekNetoMaterialni() {
+		return getMesecniZnesekBrezStroskov() - getPrispevkiSkupaj() - getDohodninaSkupaj();
+	}	
+	
+	/**
+	 * Mesecni znesek neto, brez vseh stroskov.
+	 */
+	public float getZnesekNetoKoncni() {
+		return getZnesekNetoMaterialni() - getMaterialniSkupaj();
+	}	
+	
 	
 	/*
 	 * Getters and setters below

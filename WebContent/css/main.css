@@ -27,7 +27,7 @@ div.footer {
 }
 
 div.content {
-	width: 500px;
+	width: 550px;
 	margin: auto;
 }
 
@@ -47,11 +47,13 @@ div.info {
 h1 {
 	margin: 0;
 	white-space: nowrap;
+	display: inline;
 }
 
 img {
 	border: none;
 	margin: 5px;
+	vertical-align: middle;
 }
 
 input[type='text'] {
@@ -85,7 +87,22 @@ td:nth-child(2) {
 	border-left: dashed 1px black;
 }
 
+/* IE fix */
+td:first-child + td {
+	background-color: #DBE5F1;
+	width: 100px;
+	text-align: right;
+	border-left: dashed 1px black;
+}
+
 td:nth-child(3) {
+	background-color: #DBE5F1;
+	width: 20px;
+	text-align: left;
+}
+
+/* IE fix */
+td:first-child + td + td {
 	background-color: #DBE5F1;
 	width: 20px;
 	text-align: left;
