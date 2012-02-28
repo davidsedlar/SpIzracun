@@ -1,0 +1,4 @@
+cron:
+- description: pinger
+  url: /
+  schedule: every 1 minutes
