@@ -12,6 +12,13 @@ body {
 	margin: 0;
 }
 
+div.copyright {
+	margin-bottom: 10px;
+	color: gray;
+	font-size: 90%;
+	font-weight: bold;
+}
+
 div.header {
 	background-color: #DBE5F1;
 	height: 100px;
