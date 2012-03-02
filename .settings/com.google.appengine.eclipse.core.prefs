@@ -1,5 +1,5 @@
 eclipse.preferences.version=1
 filesCopiedToWebInfLib=
-gaeIsEclipseDefaultInstPath=false
+gaeIsEclipseDefaultInstPath=true
 googleCloudSqlEnabled=false
 localDevMySqlEnabled=true
