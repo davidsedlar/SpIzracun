@@ -12,8 +12,12 @@
 		<title>Kalkulator za izračun končnega izkupička za zasebnike (S.P.-je)</title>
 		
 		<link rel="shortcut icon" href="${facesContext.externalContext.requestContextPath}/favicon.ico" />
-		<link type="text/css" href="${facesContext.externalContext.requestContextPath}/css/main.css" rel="stylesheet" />
-		      
+		<link type="text/css" rel="stylesheet" href="${facesContext.externalContext.requestContextPath}/css/main.css" />
+		<link type="text/css" rel="stylesheet" href="${facesContext.externalContext.requestContextPath}/css/jquery.qtip.min.css" />
+		
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script type="text/javascript" src="${facesContext.externalContext.requestContextPath}/js/jquery.qtip.min.js"></script>
+		
 		<script type="text/javascript">   
 		    ajaxLoader = function(data) {
 		        var ajaxstatus = data.status;
@@ -21,15 +25,45 @@
 
 		        switch (ajaxstatus) {
 		            case "begin": // This is called right before ajax request is been sent.
-		                ajaxloader.style.display = 'block';
+		                $('#ajaxloader').show();
 		                break;
 
 		            case "complete": // This is called right after ajax response is received.
-		                ajaxloader.style.display = 'none';
+		            	$('#ajaxloader').hide();
 		                break;
 		        }
 		    };
-
+		    
+		    var shared = {
+    		   position: {
+    		      my: 'top center', 
+    		      at: 'bottom center'
+    		   },
+    		   style: {
+    		      tip: true,
+    		      classes: 'ui-tooltip-rounded ui-tooltip-shadow'
+    		   }
+		    };
+		    		
+		    $(document).ready(function() {
+		    	$('#type_select td:nth-child(1)').qtip($.extend({}, shared, { 
+		    		content: {
+		    			text: 'Izračun po urah na dan (npr. 8 ur/dan)'
+		    		}
+		    	}));
+		    	$('#type_select td:nth-child(2)').qtip($.extend({}, shared, { 
+		    		content: {
+		    			text: 'Izračun po urah na mesec (npr. 168 ur/mesec)'
+		    		}
+		    	}));
+		    	$('#type_select td:nth-child(3)').qtip($.extend({}, shared, { 
+		    		content: {
+		    			text: 'Izračun glede na pavšalni mesečni znesek (npr. 3000 €/mesec). ' + 
+		    					'Predvideva se, da so prazniki, dopust ter bolniška že všteti.'
+		    		}
+		    	}));
+		    });
+		    
 		 </script>     
 	</h:head>
 	
@@ -57,14 +91,14 @@
 				<div class="section" id="type_select">
 					<img id="ajaxloader" src="${facesContext.externalContext.requestContextPath}/img/ajaxloader.gif"/>
 					<h:selectOneRadio value="#{izracunBean.tipVnosa}" styleClass="radio" required="true" label="Tip izračuna">
-					   	<f:selectItem itemValue="ure_dnevno" itemLabel="Po urah na dan" escapeItem="false" />
+					   	<f:selectItem itemValue="ure_dnevno" itemLabel="Po urah na dan" id="dfgfg"/>
 					   	<f:selectItem itemValue="ure_mesecno" itemLabel="Po urah na mesec"/>
 					   	<f:selectItem itemValue="pavsal_mesecno" itemLabel="Mesečni pavšal"/>
-					   	<f:ajax event="change" execute="@form" render="@form" listener="#{izracunBean.onLoad}" onevent="ajaxLoader"/>
+					   	<f:ajax event="click" execute="@form" render="basic_info workdays" listener="#{izracunBean.onLoad}" onevent="ajaxLoader"/>
 					</h:selectOneRadio>
 				</div>
 
-				<div class="section" id="basic_info">
+				<h:panelGroup class="section" id="basic_info" layout="block">
 					<h3>Osnovni podatki:</h3>
 					<table class="details">
 						<tr class="customizable">
@@ -104,9 +138,9 @@
 							<td>€</td>
 						</tr>
 					</table>
-				</div>
+				</h:panelGroup>
 				
-				<h:panelGroup class="section" id="workdays" layout="block" rendered="#{izracunBean.tipVnosa != 'pavsal_mesecno'}">
+				<h:panelGroup class="section" id="workdays" layout="block">
 					<h3>Delovni dnevi:</h3>
 					<table class="details">
 						<tr class="customizable">
@@ -474,12 +508,15 @@
 			
 			<div class="centermargin footer">
 				<div class="copyright">© <a href="http://si.linkedin.com/in/davidsedlar" target="_blank" title="Kontakt">David Sedlar</a> | 2012 | Vse pravice pridržane</div>
+				
 				<a href="http://code.google.com/appengine/" target="_blank" title="Google App Engine">
 					<img src="http://code.google.com/appengine/images/appengine-silver-120x30.gif"
 						alt="Powered by Google App Engine" /></a> 
+						
 				<br /> 
-				<a href="http://ocpsoft.com/prettyfaces/" target="_blank" title="JSF 2 | Servlet | Java EE | URLRewrite | URL Rewrite Filter | Bookmarks | OcpSoft">
-					<img src="http://ocpsoft.com/wp-content/uploads/2009/10/poweredby-prettyfaces-small.png" height="15" width="94" alt="JSF 2 | Servlet | Java EE | URLRewrite | URL Rewrite Filter | Bookmarks | OcpSoft"/></a>
+				
+				<a href="http://ocpsoft.org/prettyfaces/" target="_blank" title="JSF 2 | Servlet | Java EE | URLRewrite | URL Rewrite Filter | Bookmarks | OcpSoft">
+					<img src="http://ocpsoft.org/wp-content/uploads/2009/10/poweredby-prettyfaces-small.png" height="15" width="94"/></a>
 					
 				<!-- Start of StatCounter Code for Default Guide -->
 				<script type="text/javascript">
