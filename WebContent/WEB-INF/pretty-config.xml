@@ -10,7 +10,7 @@
 	</url-mapping>
 	  
 	<url-mapping id="izracun">
-		<pattern value="/#{izracunBean.urnaPostavka}/#{izracunBean.urMesecno}/#{izracunBean.urDnevno}/#{izracunBean.steviloDni}/#{izracunBean.steviloPrazniki}/#{izracunBean.steviloDopust}/#{izracunBean.steviloBolniska}/#{izracunBean.zasluzekPrispevki}/#{izracunBean.prevozZnesek}/#{izracunBean.malicaDnevno}/#{izracunBean.stroskiRacunovodstvaMesecno}/#{izracunBean.stroskiOstaliLetno}/" />
+		<pattern value="/#{izracunBean.tipVnosa}/#{izracunBean.urnaPostavka}/#{izracunBean.urMesecno}/#{izracunBean.urDnevno}/#{izracunBean.steviloDni}/#{izracunBean.steviloPrazniki}/#{izracunBean.steviloDopust}/#{izracunBean.steviloBolniska}/#{izracunBean.zasluzekPrispevki}/#{izracunBean.prevozZnesek}/#{izracunBean.malicaDnevno}/#{izracunBean.stroskiRacunovodstvaMesecno}/#{izracunBean.stroskiOstaliLetno}/" />
 		<view-id value="/izracun.jsf"  />
 		<action onPostback="false">#{izracunBean.onLoad}</action>
 	</url-mapping>

@@ -30,6 +30,7 @@ public class IzracunBean implements Serializable {
 	private float prevozZnesek = 37;
 	private float stroskiRacunovodstvaMesecno = 50;
 	private float stroskiOstaliLetno = 0;
+	private String tipVnosa = "ure_dnevno";
 	
 	private float prispevkiPokojninsko = 0;
 	private float prispevkiZdravstveno = 0;
@@ -307,5 +308,13 @@ public class IzracunBean implements Serializable {
 
 	public void setDohodninaSkupaj(float dohodninaSkupaj) {
 		this.dohodninaSkupaj = dohodninaSkupaj;
+	}
+
+	public String getTipVnosa() {
+		return tipVnosa;
+	}
+
+	public void setTipVnosa(String tipVnosa) {
+		this.tipVnosa = tipVnosa;
 	}
 }

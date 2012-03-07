@@ -13,7 +13,25 @@
 		
 		<link rel="shortcut icon" href="${facesContext.externalContext.requestContextPath}/favicon.ico" />
 		<link type="text/css" href="${facesContext.externalContext.requestContextPath}/css/main.css" rel="stylesheet" />
-</h:head>
+		      
+		<script type="text/javascript">   
+		    ajaxLoader = function(data) {
+		        var ajaxstatus = data.status;
+		        var ajaxloader = document.getElementById("ajaxloader");
+
+		        switch (ajaxstatus) {
+		            case "begin": // This is called right before ajax request is been sent.
+		                ajaxloader.style.display = 'block';
+		                break;
+
+		            case "complete": // This is called right after ajax response is received.
+		                ajaxloader.style.display = 'none';
+		                break;
+		        }
+		    };
+
+		 </script>     
+	</h:head>
 	
 	<h:body>
 		<div class="header">
@@ -36,9 +54,19 @@
 					<h:button value="Ponastavi" outcome="pretty:home" />
 				</div>	
 				
-				<div class="section">
+				<div class="section" id="type_select">
+					<img id="ajaxloader" src="${facesContext.externalContext.requestContextPath}/img/ajaxloader.gif"/>
+					<h:selectOneRadio value="#{izracunBean.tipVnosa}" styleClass="radio" required="true" label="Tip izračuna">
+					   	<f:selectItem itemValue="ure_dnevno" itemLabel="Po urah na dan" escapeItem="false" />
+					   	<f:selectItem itemValue="ure_mesecno" itemLabel="Po urah na mesec"/>
+					   	<f:selectItem itemValue="pavsal_mesecno" itemLabel="Mesečni pavšal"/>
+					   	<f:ajax event="change" execute="@form" render="@form" listener="#{izracunBean.onLoad}" onevent="ajaxLoader"/>
+					</h:selectOneRadio>
+				</div>
+
+				<div class="section" id="basic_info">
 					<h3>Osnovni podatki:</h3>
-					<table>
+					<table class="details">
 						<tr class="customizable">
 							<td>Urna postavka (brez DDV)</td>
 							<td>
@@ -57,7 +85,7 @@
 							</td>
 							<td>ur</td>
 						</tr>
-						<tr class="customizable">
+						<tr class="customizable" id="tester">
 							<td>Delovni dan (ur)</td>
 							<td>
 								<h:inputText value="#{izracunBean.urDnevno}" required="true" label="Delovni dan (ur)">
@@ -78,9 +106,9 @@
 					</table>
 				</div>
 				
-				<div class="section">
+				<h:panelGroup class="section" id="workdays" layout="block" rendered="#{izracunBean.tipVnosa != 'pavsal_mesecno'}">
 					<h3>Delovni dnevi:</h3>
-					<table>
+					<table class="details">
 						<tr class="customizable">
 							<td>Število vseh delavnikov (letno)</td>
 							<td>								
@@ -145,11 +173,11 @@
 							<td>€</td>
 						</tr>
 					</table>
-				</div>
+				</h:panelGroup>
 				
-				<div class="section">
+				<div class="section" id="social_contribution">
 					<h3>Prispevki (<a href="http://www.durs.gov.si/si/prispevki_za_socialno_varnost/prispevki_za_socialno_varnost_samozaposlenih_pojasnila/placevanje_prispevkov/" target="_blank" title="Lestvica">Več informacij...</a>):</h3>
-					<table>
+					<table class="details">
 						<tr class="customizable">
 							<td>Zaslužek prejšnje leto (dohodek)</td>
 							<td>								
@@ -207,9 +235,9 @@
 					</table>
 				</div>	
 					
-				<div class="section">
+				<div class="section" id="material_costs">
 					<h3>Materialni stroški:</h3>
-					<table>
+					<table class="details">
 						<tr class="customizable">
 							<td>Prevoz (privzeto cena vozovnice)</td>
 							<td>								
@@ -249,9 +277,9 @@
 					</table>
 				</div>	
 				
-				<div class="section">
+				<div class="section" id="other_costs">
 					<h3>Ostali stroški:</h3>
-					<table>
+					<table class="details">
 						<tr class="customizable">
 							<td>Stroški računovodstva (mesečno)</td>
 							<td>								
@@ -291,9 +319,9 @@
 					</table>
 				</div>		
 				
-				<div class="section">
+				<div class="section" id="tax_contribution">
 					<h3>Dohodnina (<a href="http://www.durs.gov.si/si/davki_predpisi_in_pojasnila/dohodnina_pojasnila/stopnje_dohodnine_za_leto_2011/lestvica_za_odmero_dohodnine_in_olajsave_za_leto_2011/" target="_blank" title="Lestvica">Več informacij...</a>):</h3>
-					<table>
+					<table class="details">
 						<tr class="total">
 							<td>Dohoninsko izhodišče (za 12 mesecev)</td>
 							<td>
@@ -351,9 +379,9 @@
 					</table>
 				</div>	
 				
-				<div class="section">
+				<div class="section" id="calculation">
 					<h3>Izračun:</h3>
-					<table>
+					<table class="details">
 						<tr>
 							<td>Letni znesek skupno</td>
 							<td>

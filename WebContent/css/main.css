@@ -51,6 +51,15 @@ div.info {
 	border: solid 1px black;
 }
 
+div#type_select {
+	box-shadow: 0 0 3px 3px #CCC;
+	border: solid 1px black;
+	border-radius: 5px;
+	padding: 5px;
+	margin-top: 15px;
+	position: relative;
+}
+
 h1 {
 	margin: 0;
 	white-space: nowrap;
@@ -63,6 +72,13 @@ img {
 	vertical-align: middle;
 }
 
+img#ajaxloader {
+	display: none;
+	position: absolute; 
+	right: -50px;
+	top: -2px;
+}
+
 input[type='text'] {
 	text-align: right;
 	width: 95%;
@@ -71,23 +87,43 @@ input[type='text'] {
 	border: solid 1px black;
 }
 
+label {
+	font-weight: bold;
+}
+
 input[type='submit'] {
 	font-weight: bold;
 	margin-right: 20px;
 }
 
-table {
+table.radio {
+	border-collapse: collapse;
+	table-layout: fixed;
+	width: 100%;
+}
+
+table.radio td {
+	border-left: dashed 1px black;
+	text-align: center;
+	padding: 5px;
+}
+
+table.radio td:hover {
+	background-color: #DBE5F1;
+}
+
+table.radio td:first-child {
+	border-left: 0;
+}
+
+table.details {
 	border-collapse: collapse;
 	table-layout: fixed;
 	border: solid 1px black;
 	width: 100%;
 }
 
-td {
-	padding: 2px;
-}
-
-td:nth-child(2) {
+table.details td:nth-child(2) {
 	background-color: #DBE5F1;
 	width: 100px;
 	text-align: right;
@@ -95,35 +131,35 @@ td:nth-child(2) {
 }
 
 /* IE fix */
-td:first-child + td {
+table.details td:first-child + td {
 	background-color: #DBE5F1;
 	width: 100px;
 	text-align: right;
 	border-left: dashed 1px black;
 }
 
-td:nth-child(3) {
+table.details > td:nth-child(3) {
 	background-color: #DBE5F1;
 	width: 20px;
 	text-align: left;
 }
 
 /* IE fix */
-td:first-child + td + td {
+table.details td:first-child + td + td {
 	background-color: #DBE5F1;
 	width: 20px;
 	text-align: left;
 }
 
-tr:hover td {
+table.details tr:hover td {
 	background-color: #DBE5F1;
 }
 
-tr.customizable {
+table.details tr.customizable {
 	color: #C0504D;
 }
 
-tr.total {
+table.details tr.total {
 	font-weight: bold;
 }
 
