@@ -64,9 +64,9 @@
 		    	}));
 		    });
 		    
-		 </script>     
-	</h:head>
-	
+		 </script>
+</h:head>
+
 	<h:body>
 		<div class="header">
 			<h1>Kalkulator za izračun končnega izkupička za zasebnike (S.P.-je)</h1>
@@ -90,44 +90,50 @@
 				
 				<div class="section" id="type_select">
 					<img id="ajaxloader" src="${facesContext.externalContext.requestContextPath}/img/ajaxloader.gif"/>
-					<h:selectOneRadio value="#{izracunBean.tipVnosa}" styleClass="radio" required="true" label="Tip izračuna">
-					   	<f:selectItem itemValue="ure_dnevno" itemLabel="Po urah na dan" id="dfgfg"/>
+					<h:selectOneRadio value="#{izracunBean.tipVnosa}" styleClass="radio" required="true" label="Tip izračuna" immediate="true" valueChangeListener="#{izracunBean.tipVnosaValueChange}">
+					   	<f:selectItem itemValue="ure_dnevno" itemLabel="Po urah na dan"/>
 					   	<f:selectItem itemValue="ure_mesecno" itemLabel="Po urah na mesec"/>
 					   	<f:selectItem itemValue="pavsal_mesecno" itemLabel="Mesečni pavšal"/>
-					   	<f:ajax event="click" execute="@form" render="basic_info workdays" listener="#{izracunBean.onLoad}" onevent="ajaxLoader"/>
+					   	<f:ajax event="click" execute="@form" render="basic_info workdays" onevent="ajaxLoader" />
 					</h:selectOneRadio>
 				</div>
 
 				<h:panelGroup class="section" id="basic_info" layout="block">
 					<h3>Osnovni podatki:</h3>
 					<table class="details">
-						<tr class="customizable">
-							<td>Urna postavka (brez DDV)</td>
-							<td>
-								<h:inputText value="#{izracunBean.urnaPostavka}" required="true" label="Urna postavka">
-									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
-								</h:inputText>
-							</td>
-							<td>€</td>
-						</tr>
-						<tr class="customizable">
-							<td>Delovnih ur (mesečno)</td>
-							<td>
-								<h:inputText value="#{izracunBean.urMesecno}" required="true" label="Delovnih ur (mesečno)">
-									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
-								</h:inputText>
-							</td>
-							<td>ur</td>
-						</tr>
-						<tr class="customizable" id="tester">
-							<td>Delovni dan (ur)</td>
-							<td>
-								<h:inputText value="#{izracunBean.urDnevno}" required="true" label="Delovni dan (ur)">
-									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
-								</h:inputText>
-							</td>
-							<td>ur</td>
-						</tr>
+						<h:panelGroup rendered="#{izracunBean.tipVnosa != 'pavsal_mesecno'}">
+							<tr class="customizable">
+								<td>Urna postavka (brez DDV)</td>
+								<td>
+									<h:inputText value="#{izracunBean.urnaPostavka}" required="true" label="Urna postavka" >
+										<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+									</h:inputText>
+								</td>
+								<td>€</td>
+							</tr>
+						</h:panelGroup>
+						<h:panelGroup rendered="#{izracunBean.tipVnosa == 'ure_mesecno'}">
+							<tr class="customizable">
+								<td>Število delovnih ur (na mesec)</td>
+								<td>
+									<h:inputText value="#{izracunBean.urMesecno}" required="true" label="Delovnih ur (mesečno)">
+										<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+									</h:inputText>
+								</td>
+								<td>ur</td>
+							</tr>
+						</h:panelGroup>
+						<h:panelGroup rendered="#{izracunBean.tipVnosa == 'ure_dnevno'}">
+							<tr class="customizable" id="tester">
+								<td>Število delovnih ur (na dan)</td>
+								<td>
+									<h:inputText value="#{izracunBean.urDnevno}" required="true" label="Delovni dan (ur)">
+										<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+									</h:inputText>
+								</td>
+								<td>ur</td>
+							</tr>
+						</h:panelGroup>
 						<tr class="total">
 							<td>Mesečni znesek skupno</td>
 							<td>
@@ -501,7 +507,7 @@
 				</div>
 				
 				<div class="section centermargin">
-					<h:commandButton value="Izračunaj" action="pretty:izracun" />
+					<h:commandButton value="Izračunaj" action="pretty:izracun" immediate="true"/>
 					<h:button value="Ponastavi" outcome="pretty:home" />
 				</div>			
 			</h:form>

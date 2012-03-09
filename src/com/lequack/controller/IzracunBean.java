@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.event.ValueChangeEvent;
 
 import com.lequack.persistence.PersistenceManager;
 
@@ -47,6 +48,11 @@ public class IzracunBean implements Serializable {
 	{
 		PersistenceManager.getPrispevki(this);
 		PersistenceManager.getDohodnina(this);
+	}
+	
+	public void tipVnosaValueChange (ValueChangeEvent ev) {
+		  // In case validation fails we still want to update the model
+		  setTipVnosa((String) ev.getNewValue());
 	}
 	
 	/**
