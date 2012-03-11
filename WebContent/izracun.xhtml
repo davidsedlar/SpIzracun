@@ -21,33 +21,19 @@
 		<script type="text/javascript" src="${facesContext.externalContext.requestContextPath}/js/jquery.numberformatter-1.2.3.min.js"></script>
 		
 		<script type="text/javascript">   
-		    ajaxLoader = function(data) {
-		        var ajaxstatus = data.status;
-		        var ajaxloader = document.getElementById("ajaxloader");
-
-		        switch (ajaxstatus) {
-		            case "begin": // This is called right before ajax request is been sent.
-		                $('#ajaxloader').show();
-		                break;
-
-		            case "complete": // This is called right after ajax response is received.
-		            	$('#ajaxloader').hide();
-		                break;
-		        }
+		    var shared = {
+	   		   position: {
+	   		      my: 'top center', 
+	   		      at: 'bottom center'
+	   		   },
+	   		   style: {
+	   		      tip: true,
+	   		      classes: 'ui-tooltip-rounded ui-tooltip-shadow'
+	   		   }
 		    };
 		    
-		    var shared = {
-    		   position: {
-    		      my: 'top center', 
-    		      at: 'bottom center'
-    		   },
-    		   style: {
-    		      tip: true,
-    		      classes: 'ui-tooltip-rounded ui-tooltip-shadow'
-    		   }
-		    };
-		    		
-		    $(document).ready(function() {
+		    // Qtips 
+		    qtips = function() {
 		    	$('#type_select td:nth-child(1)').qtip($.extend({}, shared, { 
 		    		content: {
 		    			text: 'Izračun po urah na dan (npr. 8 ur/dan)'
@@ -64,29 +50,39 @@
 		    					'Predvideva se, da so prazniki, dopust ter bolniška že všteti.'
 		    		}
 		    	}));
-		    });
-		    		
-		    $(document).ready(function() {
+		    };
+	
+		    // Number formatter
+		    numberFormat = function() {
 		    	$("input[type='text']").blur(function(){
 		    		$(this).parseNumber({format:"#,##0.00", locale:"de"});
 		    		$(this).formatNumber({format:"#,##0.00", locale:"de"});
 		    	});
-		    	$("[id$='ureDnevno']").blur(function(){
-		    		var number = $(this).parseNumber({format:"#,##0.00", locale:"de"});
-		    		$(this).formatNumber({format:"#,##0.00", locale:"de"});
-		    		
-		    		$("[id$='ureMesecno']").val(number * 21);
-		    		$("[id$='ureMesecno']").formatNumber({format:"#,##0.00", locale:"de"});
-		    	});
-		    	$("[id$='ureMesecno']").blur(function(){
-		    		var number = $(this).parseNumber({format:"#,##0.00", locale:"de"});
-		    		$(this).formatNumber({format:"#,##0.00", locale:"de"});
-		    		
-		    		$("[id$='ureDnevno']").val(number / 21);
-		    		$("[id$='ureDnevno']").formatNumber({format:"#,##0.00", locale:"de"});
-		    	});
-		    });
+		    };
 		    
+		    // On load
+		    $(document).ready(numberFormat);
+		    $(document).ready(qtips);
+		    
+			// Ajax loader graphics
+		    ajaxLoader = function(data) {
+		        var ajaxstatus = data.status;
+		        var ajaxloader = document.getElementById("ajaxloader");
+
+		        switch (ajaxstatus) {
+		            case "begin": // This is called right before ajax request is been sent.
+		                $('#ajaxloader').show();
+		                break;
+
+		            case "complete": // This is called right after ajax response is received.
+		            	$('#ajaxloader').hide();
+		                break;
+		                
+		            case "success": // This is called if successful.
+		            	numberFormat();
+		                break;
+		        }
+		    };
 		 </script>
 </h:head>
 
@@ -113,11 +109,11 @@
 				
 				<div class="section" id="type_select">
 					<img id="ajaxloader" src="${facesContext.externalContext.requestContextPath}/img/ajaxloader.gif"/>
-					<h:selectOneRadio value="#{izracunBean.tipVnosa}" styleClass="radio" required="true" label="Tip izračuna" immediate="true" valueChangeListener="#{izracunBean.tipVnosaValueChange}">
+					<h:selectOneRadio value="#{izracunBean.tipVnosa}" styleClass="radio" required="true" label="Tip izračuna">
 					   	<f:selectItem itemValue="ure_dnevno" itemLabel="Po urah na dan"/>
 					   	<f:selectItem itemValue="ure_mesecno" itemLabel="Po urah na mesec"/>
 					   	<f:selectItem itemValue="pavsal_mesecno" itemLabel="Mesečni pavšal"/>
-					   	<f:ajax event="click" execute="@form" render="basic_info workdays" onevent="ajaxLoader" />
+					   	<f:ajax event="click" execute="@this" render="basic_info workdays" onevent="ajaxLoader" />
 					</h:selectOneRadio>
 				</div>
 
@@ -530,7 +526,7 @@
 				</div>
 				
 				<div class="section centermargin">
-					<h:commandButton value="Izračunaj" action="pretty:izracun" immediate="true"/>
+					<h:commandButton value="Izračunaj" action="pretty:izracun"/>
 					<h:button value="Ponastavi" outcome="pretty:home" />
 				</div>			
 			</h:form>

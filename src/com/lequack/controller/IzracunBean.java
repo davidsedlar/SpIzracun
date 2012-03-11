@@ -3,8 +3,7 @@ package com.lequack.controller;
 import java.io.Serializable;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
-import javax.faces.event.ValueChangeEvent;
+import javax.faces.bean.ViewScoped;
 
 import com.lequack.persistence.PersistenceManager;
 
@@ -14,7 +13,7 @@ import com.lequack.persistence.PersistenceManager;
  * @author David Sedlar
  */
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class IzracunBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -48,11 +47,6 @@ public class IzracunBean implements Serializable {
 	{
 		PersistenceManager.getPrispevki(this);
 		PersistenceManager.getDohodnina(this);
-	}
-	
-	public void tipVnosaValueChange (ValueChangeEvent ev) {
-		  // In case validation fails we still want to update the model
-		  setTipVnosa((String) ev.getNewValue());
 	}
 	
 	/**
