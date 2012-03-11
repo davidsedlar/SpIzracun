@@ -17,6 +17,8 @@
 		
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 		<script type="text/javascript" src="${facesContext.externalContext.requestContextPath}/js/jquery.qtip.min.js"></script>
+		<script type="text/javascript" src="${facesContext.externalContext.requestContextPath}/js/jshashtable-2.1.js"></script>
+		<script type="text/javascript" src="${facesContext.externalContext.requestContextPath}/js/jquery.numberformatter-1.2.3.min.js"></script>
 		
 		<script type="text/javascript">   
 		    ajaxLoader = function(data) {
@@ -62,6 +64,27 @@
 		    					'Predvideva se, da so prazniki, dopust ter bolniška že všteti.'
 		    		}
 		    	}));
+		    });
+		    		
+		    $(document).ready(function() {
+		    	$("input[type='text']").blur(function(){
+		    		$(this).parseNumber({format:"#,##0.00", locale:"de"});
+		    		$(this).formatNumber({format:"#,##0.00", locale:"de"});
+		    	});
+		    	$("[id$='ureDnevno']").blur(function(){
+		    		var number = $(this).parseNumber({format:"#,##0.00", locale:"de"});
+		    		$(this).formatNumber({format:"#,##0.00", locale:"de"});
+		    		
+		    		$("[id$='ureMesecno']").val(number * 21);
+		    		$("[id$='ureMesecno']").formatNumber({format:"#,##0.00", locale:"de"});
+		    	});
+		    	$("[id$='ureMesecno']").blur(function(){
+		    		var number = $(this).parseNumber({format:"#,##0.00", locale:"de"});
+		    		$(this).formatNumber({format:"#,##0.00", locale:"de"});
+		    		
+		    		$("[id$='ureDnevno']").val(number / 21);
+		    		$("[id$='ureDnevno']").formatNumber({format:"#,##0.00", locale:"de"});
+		    	});
 		    });
 		    
 		 </script>
@@ -112,22 +135,22 @@
 								<td>€</td>
 							</tr>
 						</h:panelGroup>
-						<h:panelGroup rendered="#{izracunBean.tipVnosa == 'ure_mesecno'}">
-							<tr class="customizable">
-								<td>Število delovnih ur (na mesec)</td>
+						<h:panelGroup rendered="#{izracunBean.tipVnosa == 'ure_dnevno'}">
+							<tr class="customizable" id="tester">
+								<td>Število delovnih ur (na dan)</td>
 								<td>
-									<h:inputText value="#{izracunBean.urMesecno}" required="true" label="Delovnih ur (mesečno)">
+									<h:inputText value="#{izracunBean.urDnevno}" required="true" label="Delovniih ur (dnevno)" id="ureDnevno">
 										<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 									</h:inputText>
 								</td>
 								<td>ur</td>
 							</tr>
 						</h:panelGroup>
-						<h:panelGroup rendered="#{izracunBean.tipVnosa == 'ure_dnevno'}">
-							<tr class="customizable" id="tester">
-								<td>Število delovnih ur (na dan)</td>
+						<h:panelGroup rendered="#{izracunBean.tipVnosa == 'ure_mesecno'}">
+							<tr class="customizable">
+								<td>Število delovnih ur (na mesec)</td>
 								<td>
-									<h:inputText value="#{izracunBean.urDnevno}" required="true" label="Delovni dan (ur)">
+									<h:inputText value="#{izracunBean.urMesecno}" required="true" label="Delovnih ur (mesečno)" id="ureMesecno">
 										<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 									</h:inputText>
 								</td>
