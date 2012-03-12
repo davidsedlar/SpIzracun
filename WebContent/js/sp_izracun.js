@@ -32,6 +32,9 @@ qtips = function() {
 		}
 	}));
 };
+qtipsHide = function() {
+	$('.qtip.ui-tooltip').qtip('hide');
+};
 
 // Number formatter
 numberFormat = function() {
@@ -43,10 +46,10 @@ numberFormat = function() {
 
 // Save and restore form data
 saveData = function() {
-	inputObj = $('[id$=basic_info], [id$=workdays]').values();
+	inputObj = $('div.section:not(#type_select)').values();
 };
 restoreData = function() {
-	$('[id$=basic_info], [id$=workdays]').values(inputObj);
+	$('div.section:not(#type_select)').values(inputObj);
 };
 
 /*
@@ -87,20 +90,20 @@ ajaxLoader = function(data) {
     var ajaxstatus = data.status;
 
     switch (ajaxstatus) {
-        case "begin": // This is called right before ajax request
-						// is been sent.
+        case "begin": // This is called right before ajax request is been sent.
             $('#ajaxloader').show();
         	saveData();
+        	qtipsHide();
             break;
 
-        case "complete": // This is called right after ajax
-							// response is received.
+        case "complete": // This is called right after ajax response is received.
         	$('#ajaxloader').hide();
             break;
             
         case "success": // This is called if request successful.
         	restoreData();
         	numberFormat();
+        	qtips();
             break;
     }
 };

@@ -39,7 +39,7 @@
 			
 			<h:messages styleClass="errors" />
 			
-			<h:form>
+			<h:form id="izracunForm">
 				<div class="section centermargin">
 					<h:commandButton value="Izračunaj" action="pretty:izracun" />
 					<h:button value="Ponastavi" outcome="pretty:home" />
@@ -51,7 +51,7 @@
 					   	<f:selectItem itemValue="ure_dnevno" itemLabel="Po urah na dan"/>
 					   	<f:selectItem itemValue="ure_mesecno" itemLabel="Po urah na mesec"/>
 					   	<f:selectItem itemValue="pavsal_mesecno" itemLabel="Mesečni pavšal"/>
-					   	<f:ajax event="click" execute="@this" render="basic_info workdays" onevent="ajaxLoader"/>
+					   	<f:ajax event="click" execute="@this" render="@form" onevent="ajaxLoader"/>
 					</h:selectOneRadio>
 				</div>
 
@@ -493,7 +493,7 @@
 				</div>
 				
 				<div class="section centermargin">
-					<h:commandButton value="Izračunaj" action="pretty:izracun"/>
+					<h:commandButton value="Izračunaj" action="pretty:izracun" />
 					<h:button value="Ponastavi" outcome="pretty:home" />
 				</div>			
 			</h:form>
