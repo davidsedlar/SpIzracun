@@ -12,78 +12,16 @@
 		<title>Kalkulator za izračun končnega izkupička za zasebnike (S.P.-je)</title>
 		
 		<link rel="shortcut icon" href="${facesContext.externalContext.requestContextPath}/favicon.ico" />
-		<link type="text/css" rel="stylesheet" href="${facesContext.externalContext.requestContextPath}/css/main.css" />
-		<link type="text/css" rel="stylesheet" href="${facesContext.externalContext.requestContextPath}/css/jquery.qtip.min.css" />
+		<link type="text/css" rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/css/main.css" />
+		<link type="text/css" rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/css/jquery.qtip.min.css" />
 		
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-		<script type="text/javascript" src="${facesContext.externalContext.requestContextPath}/js/jquery.qtip.min.js"></script>
-		<script type="text/javascript" src="${facesContext.externalContext.requestContextPath}/js/jshashtable-2.1.js"></script>
-		<script type="text/javascript" src="${facesContext.externalContext.requestContextPath}/js/jquery.numberformatter-1.2.3.min.js"></script>
+		<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/jquery.qtip.min.js"></script>
+		<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/jshashtable-2.1.js"></script>
+		<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/jquery.numberformatter-1.2.3.min.js"></script>
 		
-		<script type="text/javascript">   
-		    var shared = {
-	   		   position: {
-	   		      my: 'top center', 
-	   		      at: 'bottom center'
-	   		   },
-	   		   style: {
-	   		      tip: true,
-	   		      classes: 'ui-tooltip-rounded ui-tooltip-shadow'
-	   		   }
-		    };
-		    
-		    // Qtips 
-		    qtips = function() {
-		    	$('#type_select td:nth-child(1)').qtip($.extend({}, shared, { 
-		    		content: {
-		    			text: 'Izračun po urah na dan (npr. 8 ur/dan)'
-		    		}
-		    	}));
-		    	$('#type_select td:nth-child(2)').qtip($.extend({}, shared, { 
-		    		content: {
-		    			text: 'Izračun po urah na mesec (npr. 168 ur/mesec)'
-		    		}
-		    	}));
-		    	$('#type_select td:nth-child(3)').qtip($.extend({}, shared, { 
-		    		content: {
-		    			text: 'Izračun glede na pavšalni mesečni znesek (npr. 3000 €/mesec). ' + 
-		    					'Predvideva se, da so prazniki, dopust ter bolniška že všteti.'
-		    		}
-		    	}));
-		    };
-	
-		    // Number formatter
-		    numberFormat = function() {
-		    	$("input[type='text']").blur(function(){
-		    		$(this).parseNumber({format:"#,##0.00", locale:"de"});
-		    		$(this).formatNumber({format:"#,##0.00", locale:"de"});
-		    	});
-		    };
-		    
-		    // On load
-		    $(document).ready(numberFormat);
-		    $(document).ready(qtips);
-		    
-			// Ajax loader graphics
-		    ajaxLoader = function(data) {
-		        var ajaxstatus = data.status;
-		        var ajaxloader = document.getElementById("ajaxloader");
-
-		        switch (ajaxstatus) {
-		            case "begin": // This is called right before ajax request is been sent.
-		                $('#ajaxloader').show();
-		                break;
-
-		            case "complete": // This is called right after ajax response is received.
-		            	$('#ajaxloader').hide();
-		                break;
-		                
-		            case "success": // This is called if successful.
-		            	numberFormat();
-		                break;
-		        }
-		    };
-		 </script>
+		<!-- Custom JS -->
+		<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/sp_izracun.js"></script>
 </h:head>
 
 	<h:body>
@@ -108,12 +46,12 @@
 				</div>	
 				
 				<div class="section" id="type_select">
-					<img id="ajaxloader" src="${facesContext.externalContext.requestContextPath}/img/ajaxloader.gif"/>
+					<img id="ajaxloader" src="#{facesContext.externalContext.requestContextPath}/img/ajaxloader.gif"/>
 					<h:selectOneRadio value="#{izracunBean.tipVnosa}" styleClass="radio" required="true" label="Tip izračuna">
 					   	<f:selectItem itemValue="ure_dnevno" itemLabel="Po urah na dan"/>
 					   	<f:selectItem itemValue="ure_mesecno" itemLabel="Po urah na mesec"/>
 					   	<f:selectItem itemValue="pavsal_mesecno" itemLabel="Mesečni pavšal"/>
-					   	<f:ajax event="click" execute="@this" render="basic_info workdays" onevent="ajaxLoader" />
+					   	<f:ajax event="click" execute="@this" render="basic_info workdays" onevent="ajaxLoader"/>
 					</h:selectOneRadio>
 				</div>
 
@@ -124,7 +62,7 @@
 							<tr class="customizable">
 								<td>Urna postavka (brez DDV)</td>
 								<td>
-									<h:inputText value="#{izracunBean.urnaPostavka}" required="true" label="Urna postavka" >
+									<h:inputText value="#{izracunBean.urnaPostavka}" required="true" label="Urna postavka (brez DDV)">
 										<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 									</h:inputText>
 								</td>
@@ -132,29 +70,58 @@
 							</tr>
 						</h:panelGroup>
 						<h:panelGroup rendered="#{izracunBean.tipVnosa == 'ure_dnevno'}">
-							<tr class="customizable" id="tester">
+							<tr class="customizable">
 								<td>Število delovnih ur (na dan)</td>
 								<td>
-									<h:inputText value="#{izracunBean.urDnevno}" required="true" label="Delovniih ur (dnevno)" id="ureDnevno">
+									<h:inputText value="#{izracunBean.urDnevno}" required="true" label="Število delovnih ur (na dan)">
 										<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 									</h:inputText>
+								</td>
+								<td>ur</td>
+							</tr>
+							<tr>
+								<td>Število delovnih ur (na mesec, za 21 dni)</td>
+								<td>
+									<h:outputText value="#{izracunBean.urMesecnoInfo}">
+										<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+									</h:outputText>
 								</td>
 								<td>ur</td>
 							</tr>
 						</h:panelGroup>
 						<h:panelGroup rendered="#{izracunBean.tipVnosa == 'ure_mesecno'}">
 							<tr class="customizable">
-								<td>Število delovnih ur (na mesec)</td>
+								<td>Število delovnih ur (na mesec, približno 21 dni)</td>
 								<td>
-									<h:inputText value="#{izracunBean.urMesecno}" required="true" label="Delovnih ur (mesečno)" id="ureMesecno">
+									<h:inputText value="#{izracunBean.urMesecno}" required="true" label="Število delovnih ur (na mesec)">
 										<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 									</h:inputText>
 								</td>
 								<td>ur</td>
 							</tr>
+							<tr>
+								<td>Število delovnih ur (na dan)</td>
+								<td>
+									<h:outputText value="#{izracunBean.urDnevnoInfo}">
+										<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+									</h:outputText>
+								</td>
+								<td>ur</td>
+							</tr>
+						</h:panelGroup>
+						<h:panelGroup rendered="#{izracunBean.tipVnosa == 'pavsal_mesecno'}">
+							<tr class="customizable">
+								<td>Pavšalni / fiksni znesek (mesečno)</td>
+								<td>
+									<h:inputText value="#{izracunBean.pavsalMesecno}" required="true" label="Pavšalni / fiksni znesek (mesečno)">
+										<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+									</h:inputText>
+								</td>
+								<td>€</td>
+							</tr>
 						</h:panelGroup>
 						<tr class="total">
-							<td>Mesečni znesek skupno</td>
+							<td>Mesečni znesek skupno (delovni mesec)</td>
 							<td>
 								<h:outputText value="#{izracunBean.mesecniZnesekSkupni}">
 									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />

@@ -15,12 +15,16 @@ import com.lequack.persistence.PersistenceManager;
 @ManagedBean
 @ViewScoped
 public class IzracunBean implements Serializable {
-
 	private static final long serialVersionUID = 1L;
+	
+	private static final int STEVILO_MESECEV = 12;
+	private static final int STEVILO_DELOVNIH_DNI = 21;
+	private static final float NORMIRANI_STROSKI_DELEZ = 0.25f;
  
 	private float urnaPostavka = 20;
-	private float urMesecno = 168;
 	private float urDnevno = 8;
+	private float urMesecno = 168;
+	private float pavsalMesecno = 0;
 	private float steviloDni = 261;
 	private float steviloPrazniki = 12;
 	private float steviloDopust = 25;
@@ -30,7 +34,7 @@ public class IzracunBean implements Serializable {
 	private float prevozZnesek = 37;
 	private float stroskiRacunovodstvaMesecno = 50;
 	private float stroskiOstaliLetno = 0;
-	private String tipVnosa = "ure_dnevno";
+	private TipVnosa tipVnosa = TipVnosa.ure_dnevno;
 	
 	private float prispevkiPokojninsko = 0;
 	private float prispevkiZdravstveno = 0;
@@ -39,6 +43,10 @@ public class IzracunBean implements Serializable {
 	
 	private float dohodninaSplosnaOlajsava = 0;
 	private float dohodninaSkupaj = 0;
+	
+	public enum TipVnosa {
+		ure_dnevno, ure_mesecno, pavsal_mesecno;
+	};
 
 	/**
 	 * Method is invoked by a GET type reequest.
@@ -50,11 +58,32 @@ public class IzracunBean implements Serializable {
 	}
 	
 	/**
-	 * Izracun mesecnega zneska pri dolocenih mesecnih urah.
+	 * Izracun mesenega zneska pri dolocenih mesecnih urah.
 	 */
 	public float getMesecniZnesekSkupni() {
-		return urnaPostavka * urMesecno;
+		switch (tipVnosa) {
+			case ure_dnevno:
+				return urnaPostavka * urDnevno * STEVILO_DELOVNIH_DNI;
+			case ure_mesecno:
+				return urnaPostavka * urMesecno;
+			default:
+				return pavsalMesecno;
+		}
 	}
+	
+	/**
+	 * Izracun informativnih mesecnih ur glede na dnevne.
+	 */
+	public float getUrMesecnoInfo() {
+		return urDnevno * STEVILO_DELOVNIH_DNI;
+	}	
+	
+	/**
+	 * Izracun informativnih dnevnih ur glede na mesecne.
+	 */
+	public float getUrDnevnoInfo() {
+		return urMesecno / STEVILO_DELOVNIH_DNI;
+	}	
 	
 	/**
 	 * Izracun stevila delovnih dni.
@@ -74,7 +103,7 @@ public class IzracunBean implements Serializable {
 	 * Izracun mesecnega zneska pri dolocenih mesecnih urah. odsteti normirani stroski.
 	 */
 	public float getLetniZnesekSkupniNormiran() {
-		return getLetniZnesekSkupni() * 0.75f;
+		return getLetniZnesekSkupni() * (1-NORMIRANI_STROSKI_DELEZ);
 	}	
 	
 	/**
@@ -92,7 +121,7 @@ public class IzracunBean implements Serializable {
 	}		
 
 	/**
-	 * Izracun vseh materialnih stroškov.
+	 * Izracun vseh materialnih stroï¿½kov.
 	 */
 	public float getMaterialniSkupaj() {
 		return prevozZnesek + getMalicaMesecno();
@@ -102,11 +131,11 @@ public class IzracunBean implements Serializable {
 	 * Izracun racunovodskih stroskov letno.
 	 */
 	public float getStroskiRacunovodstvaLetno() {
-		return stroskiRacunovodstvaMesecno * 12;
+		return stroskiRacunovodstvaMesecno * STEVILO_MESECEV;
 	}	
 	
 	/**
-	 * Izracun vseh stroškov letno.
+	 * Izracun vseh stroï¿½kov letno.
 	 */
 	public float getStroskiSkupaj() {
 		return getStroskiRacunovodstvaLetno() + stroskiOstaliLetno;
@@ -116,14 +145,14 @@ public class IzracunBean implements Serializable {
 	 * Dohodninsko izhodisce.
 	 */
 	public float getDohodninaIzhodisce() {
-		return getLetniZnesekSkupni() / 12;
+		return getLetniZnesekSkupni() / STEVILO_MESECEV;
 	}	
 	
 	/**
 	 * Normirani stroski mesecni.
 	 */
 	public float getDohodninaNormiraniStroski() {
-		return getDohodninaIzhodisce() * 0.25f;
+		return getDohodninaIzhodisce() * NORMIRANI_STROSKI_DELEZ;
 	}	
 	
 	/**
@@ -145,7 +174,7 @@ public class IzracunBean implements Serializable {
 	 * Mesecni znesek brez ostaligh stroskov.
 	 */
 	public float getMesecniZnesekBrezStroskov() {
-		return getLetniZnesekBrezStroskov() / 12;
+		return getLetniZnesekBrezStroskov() / STEVILO_MESECEV;
 	}
 	
 	/**
@@ -310,11 +339,19 @@ public class IzracunBean implements Serializable {
 		this.dohodninaSkupaj = dohodninaSkupaj;
 	}
 
-	public String getTipVnosa() {
+	public float getPavsalMesecno() {
+		return pavsalMesecno;
+	}
+
+	public void setPavsalMesecno(float pavsalMesecno) {
+		this.pavsalMesecno = pavsalMesecno;
+	}
+
+	public TipVnosa getTipVnosa() {
 		return tipVnosa;
 	}
 
-	public void setTipVnosa(String tipVnosa) {
+	public void setTipVnosa(TipVnosa tipVnosa) {
 		this.tipVnosa = tipVnosa;
 	}
 }
