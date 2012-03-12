@@ -24,7 +24,7 @@ public class IzracunBean implements Serializable {
 	private float urnaPostavka = 20;
 	private float urDnevno = 8;
 	private float urMesecno = 168;
-	private float pavsalMesecno = 0;
+	private float pavsalMesecno = 3000;
 	private float steviloDni = 261;
 	private float steviloPrazniki = 12;
 	private float steviloDopust = 25;
@@ -69,20 +69,6 @@ public class IzracunBean implements Serializable {
 			default:
 				return pavsalMesecno;
 		}
-	}
-	
-	/**
-	 * Izracun informativnih mesecnih ur glede na dnevne.
-	 */
-	public float getUrMesecnoInfo() {
-		return urDnevno * STEVILO_DELOVNIH_DNI;
-	}	
-	
-	/**
-	 * Izracun informativnih dnevnih ur glede na mesecne.
-	 */
-	public float getUrDnevnoInfo() {
-		return urMesecno / STEVILO_DELOVNIH_DNI;
 	}	
 	
 	/**
@@ -96,7 +82,14 @@ public class IzracunBean implements Serializable {
 	 * Izracun letnega zneska pri dolocenih urah.
 	 */
 	public float getLetniZnesekSkupni() {
-		return urnaPostavka * urDnevno * getSteviloDelavnikovSkupaj();
+		switch (tipVnosa) {
+			case ure_dnevno:
+				return urnaPostavka * urDnevno * getSteviloDelavnikovSkupaj();
+			case ure_mesecno:
+				return urnaPostavka * (urMesecno / STEVILO_DELOVNIH_DNI) * getSteviloDelavnikovSkupaj();
+			default:
+				return pavsalMesecno * STEVILO_MESECEV;
+		}
 	}	
 	
 	/**
@@ -117,7 +110,7 @@ public class IzracunBean implements Serializable {
 	 * Izracun zneska za malico.
 	 */
 	public float getMalicaMesecno() {
-		return urMesecno / urDnevno * malicaDnevno;	
+		return malicaDnevno * STEVILO_DELOVNIH_DNI;	
 	}		
 
 	/**

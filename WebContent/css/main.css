@@ -48,6 +48,10 @@ div.centermargin {
 	margin-top: 20px;
 }
 
+div.topmargin {
+	margin-top: 30px;
+}
+
 div.info {
 	background-color: #FCD0D6;
 	margin-bottom: 30px;

@@ -1,41 +1,3 @@
-// Shared Qtip properties
-var shared = {
-   position: {
-      my: 'top center', 
-      at: 'bottom center'
-   },
-   style: {
-      tip: true,
-      classes: 'ui-tooltip-rounded ui-tooltip-shadow'
-   }
-};
-// Store form parameters
-var inputObj = {};
-
-
-//Qtips tooltips
-qtips = function() {
-	$('#type_select td:nth-child(1)').qtip($.extend({}, shared, { 
-		content: {
-			text: 'Izračun po urah na dan (npr. 8 ur/dan)'
-		}
-	}));
-	$('#type_select td:nth-child(2)').qtip($.extend({}, shared, { 
-		content: {
-			text: 'Izračun po urah na mesec (npr. 168 ur/mesec)'
-		}
-	}));
-	$('#type_select td:nth-child(3)').qtip($.extend({}, shared, { 
-		content: {
-			text: 'Izračun glede na pavšalni mesečni znesek (npr. 3000 EUR/mesec). ' + 
-					'Predvideva se, da so prazniki, dopust ter bolniška že všteti.'
-		}
-	}));
-};
-qtipsHide = function() {
-	$('.qtip.ui-tooltip').qtip('hide');
-};
-
 // Number formatter
 numberFormat = function() {
 	$("input[type='text']").blur(function(){
@@ -93,7 +55,6 @@ ajaxLoader = function(data) {
         case "begin": // This is called right before ajax request is been sent.
             $('#ajaxloader').show();
         	saveData();
-        	qtipsHide();
             break;
 
         case "complete": // This is called right after ajax response is received.
@@ -103,7 +64,6 @@ ajaxLoader = function(data) {
         case "success": // This is called if request successful.
         	restoreData();
         	numberFormat();
-        	qtips();
             break;
     }
 };
