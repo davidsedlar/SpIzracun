@@ -1,73 +1,111 @@
+// Shared Qtip properties
+var shared = {
+   position: {
+      my: 'top center', 
+      at: 'bottom center'
+   },
+   style: {
+      tip: true,
+      classes: 'ui-tooltip-rounded ui-tooltip-shadow'
+   }
+};
+// Store form parameters
+var inputObj = {};
+
+
+//Qtips tooltips
+qtips = function() {
+	$('#type_select td:nth-child(1)').qtip($.extend({}, shared, { 
+		content: {
+			text: 'Izračun po urah na dan (npr. 8 ur/dan)'
+		}
+	}));
+	$('#type_select td:nth-child(2)').qtip($.extend({}, shared, { 
+		content: {
+			text: 'Izračun po urah na mesec (npr. 168 ur/mesec)'
+		}
+	}));
+	$('#type_select td:nth-child(3)').qtip($.extend({}, shared, { 
+		content: {
+			text: 'Izračun glede na pavšalni mesečni znesek (npr. 3000 EUR/mesec). ' + 
+					'Predvideva se, da so prazniki, dopust ter bolniška že všteti.'
+		}
+	}));
+};
+
 // Number formatter
 numberFormat = function() {
 	$("input[type='text']").blur(function(){
 		$(this).parseNumber({format:"#,##0.00", locale:"de"});
 		$(this).formatNumber({format:"#,##0.00", locale:"de"});
 	});
+	$("[id$='urDnevno']").blur(function(){
+		var number = $(this).parseNumber({format:"#,##0.00", locale:"de"});
+		$(this).formatNumber({format:"#,##0.00", locale:"de"});
+		
+		$("[id$='urMesecno']").val(number * 21);
+		$("[id$='urMesecno']").formatNumber({format:"#,##0.00", locale:"de"});
+	});
+	$("[id$='urMesecno']").blur(function(){
+		var number = $(this).parseNumber({format:"#,##0.00", locale:"de"});
+		$(this).formatNumber({format:"#,##0.00", locale:"de"});
+		
+		$("[id$='urDnevno']").val(number / 21);
+		$("[id$='urDnevno']").formatNumber({format:"#,##0.00", locale:"de"});
+	});
 };
 
-// Save and restore form data
-saveData = function() {
-	inputObj = $('div.section:not(#type_select)').values();
-};
-restoreData = function() {
-	$('div.section:not(#type_select)').values(inputObj);
-};
+// Section toggle
+sectionToggle = function() {
+	// Selectors
+	var selected_radio = $('input:radio[name$=tipVnosa]:checked').val();
+	
+	var div_ure = $('div[id$=basic_info], div[id$=workdays]');
+	var div_pavsal = $('div[id$=pavsal_info]');
+	var input_ure = $('div[id$=basic_info] input, div[id$=workdays] input');
+	var input_pavsal = $('div[id$=pavsal_info] input');
+	
+	var input_ure_mesecno = $('input[id$=urMesecno]');
+	var input_ure_dnevno = $('input[id$=urDnevno]');
+	
+	// If pavsal_mesecno
+	if(selected_radio == 'pavsal_mesecno') {
+		input_ure.attr('disabled', 'disabled'); 
+		div_ure.hide('slow');
 
-/*
- * jQuery.values: get or set all of the name/value pairs from child
- * input controls @argument data {array} If included, will populate
- * all child controls. @returns element if data was provided, or
- * array of values if not
- */
-$.fn.values = function(data) {
-    var els = $(this).find(':input').get();
+		input_pavsal.removeAttr('disabled');
+		div_pavsal.show('slow');	
+	}
+	
+	// If ure_dnevno or 
+	else {
+		input_pavsal.attr('disabled', 'disabled');
+		div_pavsal.hide('slow');
 
-    if(typeof data != 'object') {
-        // return all data
-        data = {};
+		input_ure.removeAttr('disabled');
+		div_ure.show('slow');
 
-        $.each(els, function() {
-            if (this.name && !this.disabled &&  (this.checked || /select|textarea/i.test(this.nodeName) || /text|hidden|password/i.test(this.type))) {
-            	data[this.name] = $(this).val();
-            }
-        });
-        return data;
-    } else {
-        $.each(els, function() {
-            if (this.name && data[this.name]) {
-                if(this.type == 'checkbox') {
-                        this.checked = (data[this.name] == $(this).val());
-                } else {
-                        $(this).val(data[this.name]);
-                }
-            }
-        });
-        return $(this);
-    }
+		if(selected_radio == 'ure_dnevno')
+			input_ure_mesecno.attr('disabled', 'disabled');
+		else if (selected_radio == 'ure_mesecno')
+			input_ure_dnevno.attr('disabled', 'disabled');
+	}
 };
 
-// Ajax loader graphics
-ajaxLoader = function(data) {
-    var ajaxstatus = data.status;
-
-    switch (ajaxstatus) {
-        case "begin": // This is called right before ajax request is been sent.
-            $('#ajaxloader').show();
-        	saveData();
-            break;
-
-        case "complete": // This is called right after ajax response is received.
-        	$('#ajaxloader').hide();
-            break;
-            
-        case "success": // This is called if request successful.
-        	restoreData();
-        	numberFormat();
-            break;
-    }
+// On submit
+handleOnSubmit = function() {
+	var selected_radio = $('input:radio[name$=tipVnosa]:checked').val();
+	var input_ure = $('input[id$=urMesecno], input[id$=urDnevno]');
+	
+	if(selected_radio != 'pavsal_mesecno')
+		input_ure.removeAttr('disabled');
 };
 
 // On load
+$(document).ready(function() {
+	$('input:radio[name$=tipVnosa]').change(sectionToggle);
+	$('#izracunForm').submit(handleOnSubmit);
+	sectionToggle();
+});
 $(document).ready(numberFormat);
 $(document).ready(qtips);

@@ -46,166 +46,156 @@
 				</div>	
 				
 				<div class="section" id="type_select">
-					<img id="ajaxloader" src="#{facesContext.externalContext.requestContextPath}/img/ajaxloader.gif"/>
-					<h:selectOneRadio value="#{izracunBean.tipVnosa}" styleClass="radio" required="true" label="Tip izračuna">
+					<h:selectOneRadio value="#{izracunBean.tipVnosa}" styleClass="radio" required="true" label="Tip izračuna" id="tipVnosa">
 					   	<f:selectItem itemValue="ure_dnevno" itemLabel="Po urah na dan"/>
 					   	<f:selectItem itemValue="ure_mesecno" itemLabel="Po urah na mesec"/>
 					   	<f:selectItem itemValue="pavsal_mesecno" itemLabel="Mesečni pavšal"/>
-					   	<f:ajax event="click" execute="@this" render="@form" onevent="ajaxLoader"/>
 					</h:selectOneRadio>
 				</div>
 				
-				<h:panelGroup rendered="#{izracunBean.tipVnosa != 'pavsal_mesecno'}">
-					<div class="section" id="basic_info">
-						<h3>Osnovni podatki:</h3>
-						<table class="details">
-							<tr class="customizable">
-								<td>Urna postavka (brez DDV)</td>
-								<td>
-									<h:inputText value="#{izracunBean.urnaPostavka}" required="true" label="Urna postavka (brez DDV)">
-										<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
-									</h:inputText>
-								</td>
-								<td>€</td>
-							</tr>
-							<h:panelGroup rendered="#{izracunBean.tipVnosa == 'ure_dnevno'}">
-								<tr class="customizable">
-									<td>Število delovnih ur (na dan)</td>
-									<td>
-										<h:inputText value="#{izracunBean.urDnevno}" required="true" label="Število delovnih ur (na dan)">
-											<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
-										</h:inputText>
-									</td>
-									<td>ur</td>
-								</tr>
-							</h:panelGroup>
-							<h:panelGroup rendered="#{izracunBean.tipVnosa == 'ure_mesecno'}">
-								<tr class="customizable">
-									<td>Število delovnih ur (na mesec, povprečno 21 dni)</td>
-									<td>
-										<h:inputText value="#{izracunBean.urMesecno}" required="true" label="Število delovnih ur (na mesec)">
-											<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
-										</h:inputText>
-									</td>
-									<td>ur</td>
-								</tr>
-							</h:panelGroup>
-							<tr class="total">
-								<td>Mesečni znesek skupno (znesek za povprečen mesec)</td>
-								<td>
-									<h:outputText value="#{izracunBean.mesecniZnesekSkupni}">
-										<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
-									</h:outputText>
-								</td>
-								<td>€</td>
-							</tr>
-						</table>
-					</div>
+				<div class="section #{izracunBean.tipVnosa != 'pavsal_mesecno' ? '' : 'hidden'}" id="basic_info">
+					<h3>Osnovni podatki:</h3>
+					<table class="details">
+						<tr class="customizable">
+							<td>Urna postavka (brez DDV)</td>
+							<td>
+								<h:inputText value="#{izracunBean.urnaPostavka}" required="true" label="Urna postavka (brez DDV)">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:inputText>
+							</td>
+							<td>€</td>
+						</tr>
+						<tr class="customizable" id="urDnevnoRow">
+							<td>Število delovnih ur (na dan)</td>
+							<td>
+								<h:inputText value="#{izracunBean.urDnevno}" required="true" label="Število delovnih ur (na dan)" id="urDnevno">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:inputText>
+							</td>
+							<td>ur</td>
+						</tr>
+						<tr class="customizable" id="urMesecnoRow">
+							<td>Število delovnih ur (na mesec, povprečno 21 dni)</td>
+							<td>
+								<h:inputText value="#{izracunBean.urMesecno}" required="true" label="Število delovnih ur (na mesec)" id="urMesecno">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:inputText>
+							</td>
+							<td>ur</td>
+						</tr>
+						<tr class="total">
+							<td>Mesečni znesek skupno (znesek za povprečen mesec)</td>
+							<td>
+								<h:outputText value="#{izracunBean.mesecniZnesekSkupni}">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:outputText>
+							</td>
+							<td>€</td>
+						</tr>
+					</table>
+				</div>
+			
+				<div class="section #{izracunBean.tipVnosa != 'pavsal_mesecno' ? '' : 'hidden'}" id="workdays">
+					<h3>Delovni dnevi:</h3>
+					<table class="details">
+						<tr class="customizable">
+							<td>Število vseh delavnikov (letno)</td>
+							<td>								
+								<h:inputText value="#{izracunBean.steviloDni}" required="true" label="Število vseh delavnikov (letno)">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:inputText>
+							</td>
+							<td>dni</td>
+						</tr>
+						<tr class="customizable">
+							<td>Prazniki</td>
+							<td>								
+								<h:inputText value="#{izracunBean.steviloPrazniki}" required="true" label="Prazniki">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:inputText>
+							</td>
+							<td>dni</td>
+						</tr>
+						<tr class="customizable">
+							<td>Dopust</td>
+							<td>								
+								<h:inputText value="#{izracunBean.steviloDopust}" required="true" label="Dopust">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:inputText>
+							</td>
+							<td>dni</td>
+						</tr>
+						<tr class="customizable">
+							<td>Bolniška</td>
+							<td>								
+								<h:inputText value="#{izracunBean.steviloBolniska}" required="true" label="Bolniška">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:inputText>
+							</td>
+							<td>dni</td>
+						</tr>
+						<tr class="total">
+							<td>Skupaj delavnikov (letno)</td>
+							<td>
+								<h:outputText value="#{izracunBean.steviloDelavnikovSkupaj}">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:outputText>
+							</td>
+							<td>dni</td>
+						</tr>
+						<tr class="total">
+							<td>Letni znesek skupno</td>
+							<td>
+								<h:outputText value="#{izracunBean.letniZnesekSkupni}">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:outputText>
+							</td>
+							<td>€</td>
+						</tr>
+						<tr class="total">
+							<td>Letni znesek skupno (odšteti normirani stroški 25%)</td>
+							<td>
+								<h:outputText value="#{izracunBean.letniZnesekSkupniNormiran}">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:outputText>
+							</td>
+							<td>€</td>
+						</tr>
+					</table>
+				</div>
 				
-					<div class="section" id="workdays">
-						<h3>Delovni dnevi:</h3>
-						<table class="details">
-							<tr class="customizable">
-								<td>Število vseh delavnikov (letno)</td>
-								<td>								
-									<h:inputText value="#{izracunBean.steviloDni}" required="true" label="Število vseh delavnikov (letno)">
-										<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
-									</h:inputText>
-								</td>
-								<td>dni</td>
-							</tr>
-							<tr class="customizable">
-								<td>Prazniki</td>
-								<td>								
-									<h:inputText value="#{izracunBean.steviloPrazniki}" required="true" label="Prazniki">
-										<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
-									</h:inputText>
-								</td>
-								<td>dni</td>
-							</tr>
-							<tr class="customizable">
-								<td>Dopust</td>
-								<td>								
-									<h:inputText value="#{izracunBean.steviloDopust}" required="true" label="Dopust">
-										<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
-									</h:inputText>
-								</td>
-								<td>dni</td>
-							</tr>
-							<tr class="customizable">
-								<td>Bolniška</td>
-								<td>								
-									<h:inputText value="#{izracunBean.steviloBolniska}" required="true" label="Bolniška">
-										<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
-									</h:inputText>
-								</td>
-								<td>dni</td>
-							</tr>
-							<tr class="total">
-								<td>Skupaj delavnikov (letno)</td>
-								<td>
-									<h:outputText value="#{izracunBean.steviloDelavnikovSkupaj}">
-										<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
-									</h:outputText>
-								</td>
-								<td>dni</td>
-							</tr>
-							<tr class="total">
-								<td>Letni znesek skupno</td>
-								<td>
-									<h:outputText value="#{izracunBean.letniZnesekSkupni}">
-										<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
-									</h:outputText>
-								</td>
-								<td>€</td>
-							</tr>
-							<tr class="total">
-								<td>Letni znesek skupno (odšteti normirani stroški 25%)</td>
-								<td>
-									<h:outputText value="#{izracunBean.letniZnesekSkupniNormiran}">
-										<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
-									</h:outputText>
-								</td>
-								<td>€</td>
-							</tr>
-						</table>
-					</div>
-				</h:panelGroup>
-				
-				<h:panelGroup rendered="#{izracunBean.tipVnosa == 'pavsal_mesecno'}">
-					<div class="section" id="pavsal_info">
-						<h3>Osnovni podatki:</h3>
-						<table class="details">
-							<tr class="customizable">
-								<td>Pavšalni / fiksni znesek (mesečno, že vklučeni prazniki, bolniška, dopust)</td>
-								<td>
-									<h:inputText value="#{izracunBean.pavsalMesecno}" required="true" label="Pavšalni / fiksni znesek (mesečno)">
-										<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
-									</h:inputText>
-								</td>
-								<td>€</td>
-							</tr>
-							<tr class="total">
-								<td>Letni znesek skupno</td>
-								<td>
-									<h:outputText value="#{izracunBean.letniZnesekSkupni}">
-										<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
-									</h:outputText>
-								</td>
-								<td>€</td>
-							</tr>
-							<tr class="total">
-								<td>Letni znesek skupno (odšteti normirani stroški 25%)</td>
-								<td>
-									<h:outputText value="#{izracunBean.letniZnesekSkupniNormiran}">
-										<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
-									</h:outputText>
-								</td>
-								<td>€</td>
-							</tr>
-						</table>
-					</div>
-				</h:panelGroup>
+				<div class="section #{izracunBean.tipVnosa == 'pavsal_mesecno' ? '' : 'hidden'}" id="pavsal_info">
+					<h3>Osnovni podatki:</h3>
+					<table class="details">
+						<tr class="customizable">
+							<td>Pavšalni / fiksni znesek (mesečno, že vklučeni prazniki, bolniška, dopust)</td>
+							<td>
+								<h:inputText value="#{izracunBean.pavsalMesecno}" required="true" label="Pavšalni / fiksni znesek (mesečno)">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:inputText>
+							</td>
+							<td>€</td>
+						</tr>
+						<tr class="total">
+							<td>Letni znesek skupno</td>
+							<td>
+								<h:outputText value="#{izracunBean.letniZnesekSkupni}">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:outputText>
+							</td>
+							<td>€</td>
+						</tr>
+						<tr class="total">
+							<td>Letni znesek skupno (odšteti normirani stroški 25%)</td>
+							<td>
+								<h:outputText value="#{izracunBean.letniZnesekSkupniNormiran}">
+									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
+								</h:outputText>
+							</td>
+							<td>€</td>
+						</tr>
+					</table>
+				</div>
 				
 				<div class="info topmargin">
 					Za pravilen obračun prispevkov je potrebno vnesti tudi zaslužek prejšnjega leta (višina trenutnega leta je odvisna od zaslužka prejšnje leto). 
@@ -216,7 +206,7 @@
 				<div class="section" id="social_contribution">
 					<h3>Prispevki (<a href="http://www.durs.gov.si/si/prispevki_za_socialno_varnost/prispevki_za_socialno_varnost_samozaposlenih_pojasnila/placevanje_prispevkov/" target="_blank" title="Lestvica">Več informacij...</a>):</h3>
 					<table class="details">
-						<tr class="customizable">
+						<tr class="customizable" id="zasluzekRow">
 							<td>Zaslužek prejšnje leto (dohodek)</td>
 							<td>								
 								<h:inputText value="#{izracunBean.zasluzekPrispevki}" required="true" label="Zaslužek prejšnje leto (dohodek)">

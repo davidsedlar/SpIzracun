@@ -33,6 +33,10 @@ div.header {
 	line-height: 100px;
 }
 
+div.hidden {
+	display: none;
+}
+
 div.footer {
 	border-top: dashed 1px black;
 	padding-top: 10px;
