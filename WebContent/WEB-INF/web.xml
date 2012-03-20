@@ -8,7 +8,7 @@
 	<display-name>sp_izracun</display-name>
 	<welcome-file-list>
 		<welcome-file>izracun.jsf</welcome-file>
-	</welcome-file-list>
+	</welcome-file-list> 
 	
 	<!-- Secure the XHTML pages  -->
 	<security-constraint>

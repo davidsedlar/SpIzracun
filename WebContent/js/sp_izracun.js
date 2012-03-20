@@ -28,7 +28,7 @@ qtips = function() {
 	$('#type_select td:nth-child(3)').qtip($.extend({}, shared, { 
 		content: {
 			text: 'Izračun glede na pavšalni mesečni znesek (npr. 3000 EUR/mesec). ' + 
-					'Predvideva se, da so prazniki, dopust ter bolniška že všteti.'
+					'Predvideva se, da so prazniki, dopust ter bolniška že všteti v znesek.'
 		}
 	}));
 };
@@ -106,6 +106,12 @@ $(document).ready(function() {
 	$('input:radio[name$=tipVnosa]').change(sectionToggle);
 	$('#izracunForm').submit(handleOnSubmit);
 	sectionToggle();
+});
+$(document).ready(function() {
+    $('#type_select td').click(function(event) {
+      if (event.target.type !== 'radio')
+        $(':radio', this).trigger('click');
+    });
 });
 $(document).ready(numberFormat);
 $(document).ready(qtips);

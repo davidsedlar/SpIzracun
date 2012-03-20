@@ -15,7 +15,7 @@
 		<link type="text/css" rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/css/main.css" />
 		<link type="text/css" rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/css/jquery.qtip.min.css" />
 		
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script type="text/javascript" src="${facesContext.externalContext.requestScheme}://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 		<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/jquery.qtip.min.js"></script>
 		<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/jshashtable-2.1.js"></script>
 		<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/jquery.numberformatter-1.2.3.min.js"></script>
@@ -126,7 +126,7 @@
 							<td>dni</td>
 						</tr>
 						<tr class="customizable">
-							<td>Bolniška</td>
+							<td>Bolniška (približna ocena)</td>
 							<td>								
 								<h:inputText value="#{izracunBean.steviloBolniska}" required="true" label="Bolniška">
 									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
@@ -152,7 +152,7 @@
 							</td>
 							<td>€</td>
 						</tr>
-						<tr class="total">
+						<tr class="total" id="letniZnesekSkupniNormiran">
 							<td>Letni znesek skupno (odšteti normirani stroški 25%)</td>
 							<td>
 								<h:outputText value="#{izracunBean.letniZnesekSkupniNormiran}">
@@ -209,7 +209,7 @@
 					<h3>Prispevki (<a href="http://www.durs.gov.si/si/prispevki_za_socialno_varnost/prispevki_za_socialno_varnost_samozaposlenih_pojasnila/placevanje_prispevkov/" target="_blank" title="Lestvica">Več informacij...</a>):</h3>
 					<table class="details">
 						<tr class="customizable" id="zasluzekRow">
-							<td>Zaslužek prejšnje leto (dohodek)</td>
+							<td>Zaslužek prejšnje leto (osnova za plačevanje prispevkov)</td>
 							<td>								
 								<h:inputText value="#{izracunBean.zasluzekPrispevki}" required="true" label="Zaslužek prejšnje leto (dohodek)">
 									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
