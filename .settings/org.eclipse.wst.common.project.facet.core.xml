@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <faceted-project>
-  <runtime name="Apache Tomcat v7.0 (1.6)"/>
+  <runtime name="Google App Engine (1.8.3)"/>
   <fixed facet="java"/>
   <fixed facet="jst.web"/>
   <fixed facet="wst.jsdt.web"/>

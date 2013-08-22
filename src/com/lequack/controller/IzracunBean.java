@@ -19,15 +19,15 @@ public class IzracunBean implements Serializable {
 	
 	private static final int STEVILO_MESECEV = 12;
 	private static final int STEVILO_DELOVNIH_DNI = 21;
-	private static final float NORMIRANI_STROSKI_DELEZ = 0.25f;
+	private static final float NORMIRANI_STROSKI_DELEZ = 0.70f;
  
 	private float urnaPostavka = 20;
 	private float urDnevno = 8;
 	private float urMesecno = 168;
 	private float pavsalMesecno = 3000;
 	private float steviloDni = 261;
-	private float steviloPrazniki = 12;
-	private float steviloDopust = 25;
+	private float steviloPrazniki = 11;
+	private float steviloDopust = 20;
 	private float steviloBolniska = 5;
 	private float zasluzekPrispevki = 0;
 	private float malicaDnevno = 6.12f;
@@ -40,6 +40,7 @@ public class IzracunBean implements Serializable {
 	private float prispevkiZdravstveno = 0;
 	private float prispevkiZaposlovanje = 0;
 	private float prispevkiStarsevsko = 0;
+	private float prispevkiDrugi = 0;
 	
 	private float dohodninaSplosnaOlajsava = 0;
 	private float dohodninaSkupaj = 0;
@@ -282,6 +283,14 @@ public class IzracunBean implements Serializable {
 
 	public void setPrispevkiStarsevsko(float prispevkiStarsevsko) {
 		this.prispevkiStarsevsko = prispevkiStarsevsko;
+	}
+	
+	public float getPrispevkiDrugi() {
+		return prispevkiDrugi;
+	}
+
+	public void setPrispevkiDrugi(float prispevkiDrugi) {
+		this.prispevkiDrugi = prispevkiDrugi;
 	}
 
 	public float getMalicaDnevno() {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
   <application>spizracun</application>
-  <version>v1-2</version>
+  <version>v1-3</version>
   <sessions-enabled>true</sessions-enabled>
   
   <!--

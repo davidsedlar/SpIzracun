@@ -1,0 +1,2 @@
+This is a modified source file from JSF 2.2.2 implementation, since GAE 
+does not support JNDI searching. THe JNDI code has thus been commented out.

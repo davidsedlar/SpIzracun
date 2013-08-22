@@ -93,10 +93,9 @@ public final class PersistenceManager {
 	    // Set the appropriate values
 	    bean.setPrispevkiPokojninsko((float) sheet.getRow(firstCell.getRow() + 5).getCell(bracket).getNumericCellValue());
 	    bean.setPrispevkiZdravstveno((float) sheet.getRow(firstCell.getRow() + 9).getCell(bracket).getNumericCellValue());
-	    bean.setPrispevkiStarsevsko((float) (sheet.getRow(firstCell.getRow() + 10).getCell(bracket).getNumericCellValue() +
-	    		sheet.getRow(firstCell.getRow() + 11).getCell(bracket).getNumericCellValue()));
-	    bean.setPrispevkiZaposlovanje((float) (sheet.getRow(firstCell.getRow() + 12).getCell(bracket).getNumericCellValue() +
-	    		sheet.getRow(firstCell.getRow() + 13).getCell(bracket).getNumericCellValue()));
+	    bean.setPrispevkiStarsevsko((float) (sheet.getRow(firstCell.getRow() + 12).getCell(bracket).getNumericCellValue()));
+	    bean.setPrispevkiZaposlovanje((float) (sheet.getRow(firstCell.getRow() + 15).getCell(bracket).getNumericCellValue()));
+	    bean.setPrispevkiDrugi((float) (sheet.getRow(firstCell.getRow() + 16).getCell(bracket).getNumericCellValue()));
 	}
 	
 	
