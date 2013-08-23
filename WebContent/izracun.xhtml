@@ -15,7 +15,7 @@
 		<link type="text/css" rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/css/main.css" />
 		<link type="text/css" rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/css/jquery.qtip.min.css" />
 		
-		<script type="text/javascript" src="${facesContext.externalContext.requestScheme}://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script type="text/javascript" src="#{facesContext.externalContext.requestScheme}://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 		<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/jquery.qtip.min.js"></script>
 		<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/jshashtable-2.1.js"></script>
 		<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/jquery.numberformatter-1.2.3.min.js"></script>
@@ -31,8 +31,8 @@
 		
 		<div class="content">
 			<div class="info">
-				Podatki so informativne narave in so izračunani na podlagi normiranih stroškov v višini 70% prihodkov. Ta oblika obračunavanja
-				stroškov je primerna za osebe, katerih prihodki iz dejavnosti v zadnjih zaporednih 12 mesecih ne presegajo 50.000 eurov.
+				Podatki so informativne narave in so izračunani na podlagi normiranih stroškov v višini #{izracunBean.normiraniStroskiDelez}% prihodkov. 
+				Ta oblika obračunavanja stroškov je primerna za osebe, katerih prihodki iz dejavnosti v zadnjih zaporednih 12 mesecih ne presegajo 50.000 eurov.
 				<br />
 				<a href="http://www.durs.gov.si/si/storitve/brosure_in_zlozenke_durs/opomnik_za_davcne_zavezance_ki_opravljajo_dejavnost_zacetnike/#c19411" target="_blank" title="Normirani stroški">Več informacij...</a>
 				<hr />
@@ -156,7 +156,7 @@
 							<td>€</td>
 						</tr>
 						<tr class="total" id="letniZnesekSkupniNormiran">
-							<td>Letni znesek skupno (odšteti normirani stroški 25%)</td>
+							<td>Letni znesek skupno (odšteti normirani stroški #{izracunBean.normiraniStroskiDelez}%)</td>
 							<td>
 								<h:outputText value="#{izracunBean.letniZnesekSkupniNormiran}">
 									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
@@ -189,7 +189,7 @@
 							<td>€</td>
 						</tr>
 						<tr class="total">
-							<td>Letni znesek skupno (odšteti normirani stroški 25%)</td>
+							<td>Letni znesek skupno (odšteti normirani stroški #{izracunBean.normiraniStroskiDelez}%)</td>
 							<td>
 								<h:outputText value="#{izracunBean.letniZnesekSkupniNormiran}">
 									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
@@ -374,7 +374,7 @@
 							<td>€</td>
 						</tr>
 						<tr>
-							<td>Normirani stroški (70%)</td>
+							<td>Normirani stroški (#{izracunBean.normiraniStroskiDelez}%)</td>
 							<td>
 								<h:outputText value="#{izracunBean.dohodninaNormiraniStroski}">
 									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />

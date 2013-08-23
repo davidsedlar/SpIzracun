@@ -185,6 +185,13 @@ public class IzracunBean implements Serializable {
 		return getZnesekNetoMaterialni() - getMaterialniSkupaj();
 	}	
 	
+	/**
+	 * Delež normiranih stroškov.
+	 */
+	public String getNormiraniStroskiDelez() {
+		return String.format("%.0f", NORMIRANI_STROSKI_DELEZ * 100);
+	}
+	
 	
 	/*
 	 * Getters and setters below
