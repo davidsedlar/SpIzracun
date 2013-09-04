@@ -36,8 +36,13 @@
 				<br />
 				<a href="http://www.durs.gov.si/si/storitve/brosure_in_zlozenke_durs/opomnik_za_davcne_zavezance_ki_opravljajo_dejavnost_zacetnike/#c19411" target="_blank" title="Normirani stroški">Več informacij...</a>
 				<hr />
-				<b>Avgust 2013:</b>	Aplikacija posodobljena, da upošteva podatke za leto 2013. Upoštevana je zadnja lestvica za višino prispevkov,
+				<b>Avgust 2013:</b> Aplikacija posodobljena, da upošteva podatke za leto 2013. Upoštevana je zadnja lestvica za višino prispevkov,
 				zadnja lestvica za odmero dohodnine ter veljavna meja in odstotek normiranih odhodkov.
+				<br />
+				<b>September 2013:</b> Popravljeno, da se dohodnina od dohodka pri uporabi normiranih stroškov obračuna po fiksni meri 20%.
+				<br />
+				<a href="http://www.durs.gov.si/si/aktualno/sprememba_obdavcitve_na_podlagi_normiranih_odhodkov_obrazci/spremembe_nacina_obdavcevanja_dohodka_iz_dejavnosti_v_letu_2013/" 
+				target="_blank" title="Spremembe načina obdavčevanja dohodka iz dejavnosti v letu 2013">Več informacij o spremembah v letu 2013...</a>	
 			</div>
 			
 			<h:messages styleClass="errors" />
@@ -362,7 +367,8 @@
 				</div>		
 				
 				<div class="section" id="tax_contribution">
-					<h3>Dohodnina (<a href="http://www.durs.gov.si/si/davki_predpisi_in_pojasnila/dohodnina_pojasnila/stopnje_dohodnine_za_leto_2012/lestvica_za_odmero_dohodnine_in_olajsave_za_leto_2012/" target="_blank" title="Lestvica">Več informacij...</a>):</h3>
+					<h3>Dohodnina (<a href="http://www.durs.gov.si/si/davki_predpisi_in_pojasnila/dohodnina_pojasnila/dohodek_iz_dejavnosti/splosno_pojasnilo/#c17435" 
+					target="_blank" title="Ugotavljanje davčne osnove z upoštevanjem normiranih odhodkov">Več informacij...</a>):</h3>
 					<table class="details">
 						<tr class="total">
 							<td>Dohoninsko izhodišče (za 12 mesecev)</td>
@@ -383,25 +389,7 @@
 							<td>€</td>
 						</tr>
 						<tr>
-							<td>Splošna olajšava</td>
-							<td>
-								<h:outputText value="#{izracunBean.dohodninaSplosnaOlajsava}">
-									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
-								</h:outputText>
-							</td>
-							<td>€</td>
-						</tr>
-						<tr>
-							<td>Prispevki</td>
-							<td>
-								<h:outputText value="#{izracunBean.prispevkiSkupaj}">
-									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
-								</h:outputText>
-							</td>
-							<td>€</td>
-						</tr>
-						<tr>
-							<td>Dohoninska osnova (odšteti stroški, olajšava in prispevki)</td>
+							<td>Dohoninska osnova (odšteti normirani stroški)</td>
 							<td>
 								<h:outputText value="#{izracunBean.dohodninaOsnova}">
 									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2"/>
@@ -410,9 +398,9 @@
 							<td>€</td>
 						</tr>
 						<tr class="total">
-							<td>Skupaj dohodnina (mesečno)</td>
+							<td>Skupaj dohodnina (mesečno, fiksno 20% dohodnineske osnove)</td>
 							<td>
-								<h:outputText value="#{izracunBean.dohodninaSkupaj}">
+								<h:outputText value="#{izracunBean.dohodninaSkupajFiksno}">
 									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 								</h:outputText>
 							</td>
@@ -472,7 +460,7 @@
 						<tr>
 							<td>Dohodnina (mesečno)</td>
 							<td>
-								<h:outputText value="#{izracunBean.dohodninaSkupaj}">
+								<h:outputText value="#{izracunBean.dohodninaSkupajFiksno}">
 									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 								</h:outputText>
 							</td>

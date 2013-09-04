@@ -20,6 +20,7 @@ public class IzracunBean implements Serializable {
 	private static final int STEVILO_MESECEV = 12;
 	private static final int STEVILO_DELOVNIH_DNI = 21;
 	private static final float NORMIRANI_STROSKI_DELEZ = 0.70f;
+	private static final float DOHODNINA_FIKSNI_DELEZ = 0.20f;
  
 	private float urnaPostavka = 20;
 	private float urDnevno = 8;
@@ -55,7 +56,6 @@ public class IzracunBean implements Serializable {
 	public void onLoad()
 	{
 		PersistenceManager.getPrispevki(this);
-		PersistenceManager.getDohodnina(this);
 	}
 	
 	/**
@@ -153,8 +153,15 @@ public class IzracunBean implements Serializable {
 	 * Dohodninska osnova.
 	 */
 	public float getDohodninaOsnova() {
-		float dohOsnova = getDohodninaIzhodisce() - getDohodninaNormiraniStroski() - dohodninaSplosnaOlajsava - getPrispevkiSkupaj();
+		float dohOsnova = getDohodninaIzhodisce() - getDohodninaNormiraniStroski();
 		return (dohOsnova < 0) ? 0 : dohOsnova;
+	}	
+	
+	/**
+	 * Skupaj dohodnina, odnova pomnožena z fiksnim deležem.
+	 */	
+	public float getDohodninaSkupajFiksno() {
+		return getDohodninaOsnova() * DOHODNINA_FIKSNI_DELEZ;
 	}	
 	
 	/**
@@ -175,7 +182,7 @@ public class IzracunBean implements Serializable {
 	 * Mesecni znesek neto skupaj z materialnimi stroski.
 	 */
 	public float getZnesekNetoMaterialni() {
-		return getMesecniZnesekBrezStroskov() - getPrispevkiSkupaj() - getDohodninaSkupaj();
+		return getMesecniZnesekBrezStroskov() - getPrispevkiSkupaj() - getDohodninaSkupajFiksno();
 	}	
 	
 	/**
@@ -339,11 +346,11 @@ public class IzracunBean implements Serializable {
 	public void setDohodninaSplosnaOlajsava(float dohodninaSplosnaOlajsava) {
 		this.dohodninaSplosnaOlajsava = dohodninaSplosnaOlajsava;
 	}
-
+	
 	public float getDohodninaSkupaj() {
 		return dohodninaSkupaj;
 	}
-
+	
 	public void setDohodninaSkupaj(float dohodninaSkupaj) {
 		this.dohodninaSkupaj = dohodninaSkupaj;
 	}
