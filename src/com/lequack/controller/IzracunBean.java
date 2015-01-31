@@ -5,7 +5,6 @@ import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
-import com.lequack.persistence.PersistenceManager;
 
 /**
  * Izracun zneskov za samostojne podjetnike.
@@ -17,17 +16,13 @@ import com.lequack.persistence.PersistenceManager;
 public class IzracunBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	private static final int STEVILO_MESECEV = 12;
-	private static final int STEVILO_DELOVNIH_DNI = 21;
-	private static final float NORMIRANI_STROSKI_DELEZ = 0.70f;
-	private static final float DOHODNINA_FIKSNI_DELEZ = 0.20f;
- 
+	// Vnosna polja z nekimi smiselnimi zacetnimi vrednostmi
 	private float urnaPostavka = 20;
 	private float urDnevno = 8;
 	private float urMesecno = 168;
 	private float pavsalMesecno = 3000;
 	private float steviloDni = 261;
-	private float steviloPrazniki = 11;
+	private float steviloPrazniki = 6;
 	private float steviloDopust = 20;
 	private float steviloBolniska = 5;
 	private float zasluzekPrispevki = 0;
@@ -35,27 +30,13 @@ public class IzracunBean implements Serializable {
 	private float prevozZnesek = 37;
 	private float stroskiRacunovodstvaMesecno = 50;
 	private float stroskiOstaliLetno = 0;
-	private TipVnosa tipVnosa = TipVnosa.ure_dnevno;
-	
-	private float prispevkiPokojninsko = 0;
-	private float prispevkiZdravstveno = 0;
-	private float prispevkiZaposlovanje = 0;
-	private float prispevkiStarsevsko = 0;
-	private float prispevkiDrugi = 0;
-	
-	private float dohodninaSplosnaOlajsava = 0;
-	private float dohodninaSkupaj = 0;
-	
-	public enum TipVnosa {
-		ure_dnevno, ure_mesecno, pavsal_mesecno;
-	};
+	private IzracunConstants.TipVnosa tipVnosa = IzracunConstants.TipVnosa.ure_dnevno;
 
 	/**
 	 * Method is invoked by a GET type reequest.
 	 */
 	public void onLoad()
 	{
-		PersistenceManager.getPrispevki(this);
 	}
 	
 	/**
@@ -64,7 +45,7 @@ public class IzracunBean implements Serializable {
 	public float getMesecniZnesekSkupni() {
 		switch (tipVnosa) {
 			case ure_dnevno:
-				return urnaPostavka * urDnevno * STEVILO_DELOVNIH_DNI;
+				return urnaPostavka * urDnevno * IzracunConstants.STEVILO_DELOVNIH_DNI;
 			case ure_mesecno:
 				return urnaPostavka * urMesecno;
 			default:
@@ -87,9 +68,9 @@ public class IzracunBean implements Serializable {
 			case ure_dnevno:
 				return urnaPostavka * urDnevno * getSteviloDelavnikovSkupaj();
 			case ure_mesecno:
-				return urnaPostavka * (urMesecno / STEVILO_DELOVNIH_DNI) * getSteviloDelavnikovSkupaj();
+				return urnaPostavka * (urMesecno / IzracunConstants.STEVILO_DELOVNIH_DNI) * getSteviloDelavnikovSkupaj();
 			default:
-				return pavsalMesecno * STEVILO_MESECEV;
+				return pavsalMesecno * IzracunConstants.STEVILO_MESECEV;
 		}
 	}	
 	
@@ -97,25 +78,81 @@ public class IzracunBean implements Serializable {
 	 * Izracun mesecnega zneska pri dolocenih mesecnih urah. odsteti normirani stroski.
 	 */
 	public float getLetniZnesekSkupniNormiran() {
-		return getLetniZnesekSkupni() * (1-NORMIRANI_STROSKI_DELEZ);
+		return getLetniZnesekSkupni() * (1-IzracunConstants.NORMIRANI_STROSKI_DELEZ);
 	}	
 	
 	/**
 	 * Izracun vseh prispevkov.
 	 */
 	public float getPrispevkiSkupaj() {
-		return prispevkiPokojninsko + prispevkiZdravstveno + prispevkiStarsevsko + prispevkiZaposlovanje;	
+		return getPrispevkiPokojninsko() + getPrispevkiZdravstveno() + getPrispevkiStarsevsko() + getPrispevkiZaposlovanje();	
 	}	
+	
+	/**
+	 * Izracun prispevkov za PIZ.
+	 */
+	public float getPrispevkiPokojninsko() {
+		return getPrispevkiOsnova() * (IzracunConstants.PRISPEVKI_PIZ_ZAVAROVANEC + IzracunConstants.PRISPEVKI_PIZ_DELODAJALEC);
+	}
+
+	/**
+	 * Izracun prispevkov za ZZ.
+	 */
+	public float getPrispevkiZdravstveno() {
+		return getPrispevkiZZOsnova() * (IzracunConstants.PRISPEVKI_ZZ_ZAVAROVANEC + IzracunConstants.PRISPEVKI_ZZ_DELODAJALEC + IzracunConstants.PRISPEVKI_ZZ_POSKODBE_PRI_DELU);
+	}
+	
+	/**
+	 * Izracun prispevkov za zaposlovanje.
+	 */
+	public float getPrispevkiZaposlovanje() {
+		return getPrispevkiOsnova() * (IzracunConstants.PRISPEVKI_ZAPOSL_ZAVAROVANEC + IzracunConstants.PRISPEVKI_ZAPOSL_DELODAJALEC);
+	}
+
+	/**
+	 * Izracun prispevkov za starsevstvo.
+	 */
+	public float getPrispevkiStarsevsko() {
+		return getPrispevkiOsnova() * (IzracunConstants.PRISPEVKI_STAR_VARSTVO_ZAVAROVANEC +  IzracunConstants.PRISPEVKI_STAR_VARSTVO_DELODAJALEC);
+	}
+	
+	/**
+	 * Osnova za izracun prispevkov, mesecna osnova.
+	 */
+	public float getPrispevkiOsnova() {
+		float zasluzekPrispevkiMesecni = zasluzekPrispevki / IzracunConstants.STEVILO_MESECEV;
+		
+		if(zasluzekPrispevkiMesecni < IzracunConstants.PRISPEVKI_OSNOVA_MIN)
+			return IzracunConstants.PRISPEVKI_OSNOVA_MIN;
+		else if(zasluzekPrispevkiMesecni > IzracunConstants.PRISPEVKI_OSNOVA_MAX)
+			return IzracunConstants.PRISPEVKI_OSNOVA_MAX;
+		else
+			return zasluzekPrispevkiMesecni;
+	}
+	
+	/**
+	 * Osnova za izracun prispevkov za ZZ, mesecna osnova. Drugacna spodnja meja, zato posebna metoda.
+	 */
+	public float getPrispevkiZZOsnova() {
+		float zasluzekPrispevkiMesecni = zasluzekPrispevki / IzracunConstants.STEVILO_MESECEV;
+		
+		if(zasluzekPrispevkiMesecni < IzracunConstants.PRISPEVKI_ZZ_OSNOVA_MIN)
+			return IzracunConstants.PRISPEVKI_ZZ_OSNOVA_MIN;
+		else if(zasluzekPrispevkiMesecni > IzracunConstants.PRISPEVKI_ZZ_OSNOVA_MAX)
+			return IzracunConstants.PRISPEVKI_ZZ_OSNOVA_MAX;
+		else
+			return zasluzekPrispevkiMesecni;
+	}
 	
 	/**
 	 * Izracun zneska za malico.
 	 */
 	public float getMalicaMesecno() {
-		return malicaDnevno * STEVILO_DELOVNIH_DNI;	
+		return malicaDnevno * IzracunConstants.STEVILO_DELOVNIH_DNI;	
 	}		
 
 	/**
-	 * Izracun vseh materialnih stro�kov.
+	 * Izracun vseh materialnih stroskov.
 	 */
 	public float getMaterialniSkupaj() {
 		return prevozZnesek + getMalicaMesecno();
@@ -125,11 +162,11 @@ public class IzracunBean implements Serializable {
 	 * Izracun racunovodskih stroskov letno.
 	 */
 	public float getStroskiRacunovodstvaLetno() {
-		return stroskiRacunovodstvaMesecno * STEVILO_MESECEV;
+		return stroskiRacunovodstvaMesecno * IzracunConstants.STEVILO_MESECEV;
 	}	
 	
 	/**
-	 * Izracun vseh stro�kov letno.
+	 * Izracun vseh stroskov letno.
 	 */
 	public float getStroskiSkupaj() {
 		return getStroskiRacunovodstvaLetno() + stroskiOstaliLetno;
@@ -139,14 +176,14 @@ public class IzracunBean implements Serializable {
 	 * Dohodninsko izhodisce.
 	 */
 	public float getDohodninaIzhodisce() {
-		return getLetniZnesekSkupni() / STEVILO_MESECEV;
+		return getLetniZnesekSkupni() / IzracunConstants.STEVILO_MESECEV;
 	}	
 	
 	/**
 	 * Normirani stroski mesecni.
 	 */
 	public float getDohodninaNormiraniStroski() {
-		return getDohodninaIzhodisce() * NORMIRANI_STROSKI_DELEZ;
+		return getDohodninaIzhodisce() * IzracunConstants.NORMIRANI_STROSKI_DELEZ;
 	}	
 	
 	/**
@@ -158,24 +195,24 @@ public class IzracunBean implements Serializable {
 	}	
 	
 	/**
-	 * Skupaj dohodnina, odnova pomnožena z fiksnim deležem.
+	 * Skupaj dohodnina, odnova pomnožena z fiksnim delezem.
 	 */	
 	public float getDohodninaSkupajFiksno() {
-		return getDohodninaOsnova() * DOHODNINA_FIKSNI_DELEZ;
+		return getDohodninaOsnova() * IzracunConstants.DOHODNINA_FIKSNI_DELEZ;
 	}	
 	
 	/**
-	 * Letni znesek brez ostaligh stroskov.
+	 * Letni znesek brez ostalih stroskov.
 	 */
 	public float getLetniZnesekBrezStroskov() {
 		return getLetniZnesekSkupni() - getStroskiSkupaj();
 	}	
 	
 	/**
-	 * Mesecni znesek brez ostaligh stroskov.
+	 * Mesecni znesek brez ostalih stroskov.
 	 */
 	public float getMesecniZnesekBrezStroskov() {
-		return getLetniZnesekBrezStroskov() / STEVILO_MESECEV;
+		return getLetniZnesekBrezStroskov() / IzracunConstants.STEVILO_MESECEV;
 	}
 	
 	/**
@@ -193,10 +230,17 @@ public class IzracunBean implements Serializable {
 	}	
 	
 	/**
-	 * Delež normiranih stroškov.
+	 * Delez normiranih stroškov.
 	 */
 	public String getNormiraniStroskiDelez() {
-		return String.format("%.0f", NORMIRANI_STROSKI_DELEZ * 100);
+		return String.format("%.0f", IzracunConstants.NORMIRANI_STROSKI_DELEZ * 100);
+	}
+	
+	/**
+	 * Delez normiranih stroškov (pred 2015).
+	 */
+	public String getNormiraniStroskiDelezOld() {
+		return String.format("%.0f", IzracunConstants.NORMIRANI_STROSKI_DELEZ_OLD * 100);
 	}
 	
 	
@@ -267,46 +311,6 @@ public class IzracunBean implements Serializable {
 		this.zasluzekPrispevki = zasluzekPrispevki;
 	}
 
-	public float getPrispevkiPokojninsko() {
-		return prispevkiPokojninsko;
-	}
-
-	public void setPrispevkiPokojninsko(float prispevkiPokojninsko) {
-		this.prispevkiPokojninsko = prispevkiPokojninsko;
-	}
-
-	public float getPrispevkiZdravstveno() {
-		return prispevkiZdravstveno;
-	}
-
-	public void setPrispevkiZdravstveno(float prispevkiZdravstveno) {
-		this.prispevkiZdravstveno = prispevkiZdravstveno;
-	}
-
-	public float getPrispevkiZaposlovanje() {
-		return prispevkiZaposlovanje;
-	}
-
-	public void setPrispevkiZaposlovanje(float prispevkiZaposlovanje) {
-		this.prispevkiZaposlovanje = prispevkiZaposlovanje;
-	}
-
-	public float getPrispevkiStarsevsko() {
-		return prispevkiStarsevsko;
-	}
-
-	public void setPrispevkiStarsevsko(float prispevkiStarsevsko) {
-		this.prispevkiStarsevsko = prispevkiStarsevsko;
-	}
-	
-	public float getPrispevkiDrugi() {
-		return prispevkiDrugi;
-	}
-
-	public void setPrispevkiDrugi(float prispevkiDrugi) {
-		this.prispevkiDrugi = prispevkiDrugi;
-	}
-
 	public float getMalicaDnevno() {
 		return malicaDnevno;
 	}
@@ -339,22 +343,6 @@ public class IzracunBean implements Serializable {
 		this.stroskiOstaliLetno = stroskiOstaliLetno;
 	}
 
-	public float getDohodninaSplosnaOlajsava() {
-		return dohodninaSplosnaOlajsava;
-	}
-
-	public void setDohodninaSplosnaOlajsava(float dohodninaSplosnaOlajsava) {
-		this.dohodninaSplosnaOlajsava = dohodninaSplosnaOlajsava;
-	}
-	
-	public float getDohodninaSkupaj() {
-		return dohodninaSkupaj;
-	}
-	
-	public void setDohodninaSkupaj(float dohodninaSkupaj) {
-		this.dohodninaSkupaj = dohodninaSkupaj;
-	}
-
 	public float getPavsalMesecno() {
 		return pavsalMesecno;
 	}
@@ -363,11 +351,11 @@ public class IzracunBean implements Serializable {
 		this.pavsalMesecno = pavsalMesecno;
 	}
 
-	public TipVnosa getTipVnosa() {
+	public IzracunConstants.TipVnosa getTipVnosa() {
 		return tipVnosa;
 	}
 
-	public void setTipVnosa(TipVnosa tipVnosa) {
+	public void setTipVnosa(IzracunConstants.TipVnosa tipVnosa) {
 		this.tipVnosa = tipVnosa;
 	}
 }

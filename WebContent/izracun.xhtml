@@ -31,24 +31,19 @@
 		
 		<div class="content">
 			<div class="info">
-				Podatki so informativne narave in so izračunani na podlagi normiranih stroškov v višini #{izracunBean.normiraniStroskiDelez}% prihodkov. 
-				Ta oblika obračunavanja stroškov je primerna za osebe, katerih prihodki iz dejavnosti v zadnjih zaporednih 12 mesecih ne presegajo 50.000 eurov.
+				Podatki so informativne narave in so izračunani na podlagi normiranih stroškov v višini <b>#{izracunBean.normiraniStroskiDelez}%</b> prihodkov (pred 2015 v višini #{izracunBean.normiraniStroskiDelezOld}%). 
+				Ta oblika obračunavanja stroškov je primerna za osebe, katerih prihodki iz dejavnosti v zadnjih zaporednih 12 mesecih ne presegajo <b>100.000 EUR</b> (pred 2015 do 50.000 EUR).
 				<br />
-				<a href="http://www.durs.gov.si/si/storitve/brosure_in_zlozenke_durs/opomnik_za_davcne_zavezance_ki_opravljajo_dejavnost_zacetnike/#c19411" target="_blank" title="Normirani stroški">Več informacij...</a>
+				<a href="http://www.durs.gov.si/si/storitve/davki_podrobneje/opomnik_za_davcne_zavezance_ki_opravljajo_dejavnost_zacetnike/#c19411" target="_blank" title="Normirani stroški">Več informacij...</a>
 				<hr />
 				Aplikacija je sedaj <b>open-source</b>! Kodo lahko presnamete in sodulujete, klikni -&gt;   
 				<a href="https://github.com/davidsedlar/SpIzracun" target="_blank" title="GitHub - SpIzracun">
 					<img src="#{facesContext.externalContext.requestContextPath}/img/github.png" alt="GitHub Logo"/></a> 			
 				<hr />
-				<b>Marec 2014:</b> Posodobljena lestvica za višino prispevkov. Popravljene nekatere povezave.
+				<b>Januar 2015:</b> Posodobljena lestvica za višino prispevkov, popravljene nedelujoče povezave, spremembe višine normiranih stroškov.
 				<br />
-				<b>Avgust 2013:</b> Aplikacija posodobljena, da upošteva podatke za leto 2013. Upoštevana je zadnja lestvica za višino prispevkov,
-				zadnja lestvica za odmero dohodnine ter veljavna meja in odstotek normiranih odhodkov.
-				<br />
-				<b>September 2013:</b> Popravljeno, da se dohodnina od dohodka pri uporabi normiranih stroškov obračuna po fiksni meri 20%.
-				<br />
-				<a href="http://www.durs.gov.si/si/aktualno/novosti_zddpo_2_zdoh_2_in_zdfs_ki_so_bile_10_12_2012_objavljene_v_uradnem_listu_rs_st_9412/informacija_o_novostih_ki_jih_prinasa_zdoh_2l/" 
-				target="_blank" title="Spremembe načina obdavčevanja dohodka iz dejavnosti v letu 2013">Več informacij o spremembah v letu 2013...</a>	
+				<a href="http://www.durs.gov.si/si/davki_predpisi_in_pojasnila/dohodnina_pojasnila/dohodek_iz_dejavnosti/vprasanja_in_odgovori_v_zvezi_z_opredelitvijo_pogojev_za_ugotavljanje_davcne_osnove_z_upostevanjem_normiranih_odhodkov_novela_zdoh_2n/" 
+				target="_blank" title="Več informacij o spremembah v letu 2015 (ZDOH-2N)">Več informacij o spremembah v letu 2015 (ZDOH-2N)...</a>	
 			</div>
 			
 			<h:messages styleClass="errors" />
@@ -213,17 +208,21 @@
 				
 				<div class="info topmargin">
 					Za pravilen obračun prispevkov je potrebno vnesti tudi zaslužek prejšnjega leta (višina prispevkov trenutnega leta je odvisna od zaslužka prejšnjega leta). 
-					Če gre za novega zasebnika oz. prvo leto delovanja pustite vrednost na 0, za izračun za drugo, tretje ali kasnejše leto pa se lahko vnese 
-					zgornji letni znesek z odštetimi normiranimi stroški.
+					K temu znesku se prištejejo še skupni prispevki prejšnjega leta. To dvoje skupaj predstavlja osnovo za določitev višine prispevkov.
+					<hr />
+					<b>Primer:</b> 
 					<br />
-					<a href="http://www.durs.gov.si/si/storitve/brosure_in_zlozenke_durs/opomnik_za_davcne_zavezance_ki_opravljajo_dejavnost_zacetnike/#c19415" target="_blank" title="Višina prispevkov">Več informacij...</a>
+					Če gre za novega zasebnika oz. prvo leto delovanja pustite vrednost na 0 €, za izračun za drugo, tretje ali kasnejše leto pa se npr. lahko vnese 
+					zgornji letni znesek z odštetimi normiranimi stroški  + skupaj vsota prispevkov za celo leto (mesečcno x 12) = osnova za izračun prispevkov.
+					<br />
+					<a href="http://www.durs.gov.si/si/prispevki_za_socialno_varnost/prispevki_za_socialno_varnost_samozaposlenih_pojasnila/" target="_blank" title="Višina prispevkov">Več informacij...</a>
 				</div>				
 				
 				<div class="section" id="social_contribution">
-					<h3>Prispevki (<a href="http://www.durs.gov.si/si/prispevki_za_socialno_varnost/prispevki_za_socialno_varnost_samozaposlenih_pojasnila/placevanje_prispevkov/" target="_blank" title="Lestvica">Več informacij...</a>):</h3>
+					<h3>Prispevki (<a href="http://www.fu.gov.si/davki_in_druge_dajatve/podrocja/prispevki_za_socialno_varnost/osnove_za_placilo_ter_zneski_prispevkov_za_socialno_varnost/" target="_blank" title="Lestvica">Več informacij...</a>):</h3>
 					<table class="details">
 						<tr class="customizable" id="zasluzekRow">
-							<td>Zaslužek prejšnje leto (osnova za plačevanje prispevkov)</td>
+							<td>Osnova za izračun prispevkov = zaslužek prejšnje leto + vsota prispevkov prejšnejga leta (0 € za prvo leto)</td>
 							<td>								
 								<h:inputText value="#{izracunBean.zasluzekPrispevki}" required="true" label="Zaslužek prejšnje leto (dohodek)">
 									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
@@ -262,15 +261,6 @@
 							<td>Starševsko varstvo (0,10% + 0,10%)</td>
 							<td>
 								<h:outputText value="#{izracunBean.prispevkiStarsevsko}">
-									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
-								</h:outputText>
-							</td>
-							<td>€</td>
-						</tr>	
-						<tr>
-							<td>Drugi prispevki (fiksno glede na zaslužek)</td>
-							<td>
-								<h:outputText value="#{izracunBean.prispevkiDrugi}">
 									<f:convertNumber groupingUsed="true" minFractionDigits="2" maxFractionDigits="2" />
 								</h:outputText>
 							</td>
@@ -509,7 +499,7 @@
 			</h:form>
 			
 			<div class="centermargin footer">
-				<div class="copyright">© <a href="http://si.linkedin.com/in/davidsedlar" target="_blank" title="Kontakt">David Sedlar</a> | 2014 | Vse pravice pridržane</div>
+				<div class="copyright">© <a href="http://si.linkedin.com/in/davidsedlar" target="_blank" title="Kontakt">David Sedlar</a> | 2012-2015 | Vse pravice pridržane</div>
 				
 				<a href="http://code.google.com/appengine/" target="_blank" title="Google App Engine">
 					<img src="http://code.google.com/appengine/images/appengine-silver-120x30.gif" alt="Powered by Google App Engine" /></a> 			
